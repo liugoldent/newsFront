@@ -1,7 +1,8 @@
 <template>
   <div class="about">
     <h1>This is an self page</h1>
-    <button @click="increment">Self Testt=</button>
+    <button @click="get">Get Func</button>
+    <button @click="post">Post Func</button>
     <h1>{{ count }}</h1>
   </div>
 </template>
@@ -14,10 +15,24 @@ export default {
 
 
         const { proxy } = getCurrentInstance()
-        function getData() {
+        function get() {
+          proxy.axios({
+            method: 'get',
+            url: '/'
+          }).then(res=>{
+            console.log(res);
+            // let { data } = res.data
+            // console.log(data)
+          }).catch((err) => {
+            console.log(err)
+          });
+        }
+
+
+        function get() {
           proxy.axios({
             method: 'post',
-            url: '/',
+            url: '/word',
             data: {
               firstName: 'Finn',
               lastName: 'Williams'
@@ -30,8 +45,7 @@ export default {
             console.log(err)
           });
         }
-        getData()
-        return {count, increment}
+        return {count, get}
     }
 }
 </script>

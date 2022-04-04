@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <h1>This is an self page</h1>
-    <button @click="increment">Self Test</button>
+    <button @click="increment">Self Testt=</button>
     <h1>{{ count }}</h1>
   </div>
 </template>

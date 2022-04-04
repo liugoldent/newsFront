@@ -29,7 +29,7 @@ export default {
         }
 
 
-        function get() {
+        function post() {
           proxy.axios({
             method: 'post',
             url: '/word',
@@ -45,7 +45,7 @@ export default {
             console.log(err)
           });
         }
-        return {count, get}
+        return {count, get, post}
     }
 }
 </script>

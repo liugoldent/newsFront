@@ -15,18 +15,20 @@ export default {
 
         const { proxy } = getCurrentInstance()
         function getData() {
-        proxy.axios({
-          method: 'get',
-          url: '/',
-          data: {
-            firstName: 'Finn',
-            lastName: 'Williams'
-          }
-        }).then(res=>{
-          console.log(res);
-          // let { data } = res.data
-          // console.log(data)
-        })
+          proxy.axios({
+            method: 'post',
+            url: '/',
+            data: {
+              firstName: 'Finn',
+              lastName: 'Williams'
+            }
+          }).then(res=>{
+            console.log(res);
+            // let { data } = res.data
+            // console.log(data)
+          }).catch((err) => {
+            console.log(err)
+          });
         }
         getData()
         return {count, increment}

@@ -32,7 +32,7 @@ export default {
         function post() {
           proxy.axios({
             method: 'post',
-            url: '/word',
+            url: 'word',
             data: {
               firstName: 'Finn',
               lastName: 'Williams'

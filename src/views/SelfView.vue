@@ -11,23 +11,13 @@ export default {
     setup(){
         const count = ref(0);
         const increment = () => count.value++;
-        
-        
-        // const { appContext } = getCurrentInstance();
-        // onMounted(() => {
-        //   console.log('1')
-        //   console.log(appContext.config.globalProperties.axios)
-        //   console.log('2')
-        // })
 
 
         const { proxy } = getCurrentInstance()
-        console.log(proxy.axios)
-        console.log(proxy)
         function getData() {
         proxy.axios({
-          method: 'post',
-          url: '/word',
+          method: 'get',
+          url: '/',
           data: {
             firstName: 'Finn',
             lastName: 'Williams'
@@ -39,9 +29,9 @@ export default {
         })
         }
         getData()
-        return {count, increment} 
+        return {count, increment}
     }
-} 
+}
 </script>
 <style>
 @media (min-width: 1024px) {

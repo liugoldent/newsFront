@@ -2,9 +2,9 @@
   "name": "frontend",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
-    "preview": "vite preview --port 5050"
+    "preview": "vite preview --port 5050 --host"
   },
   "dependencies": {
     "axios": "^0.26.1",

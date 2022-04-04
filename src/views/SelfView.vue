@@ -32,7 +32,7 @@ export default {
         function post() {
           proxy.axios({
             method: 'post',
-            url: 'word',
+            url: 'https://news-backend-g.herokuapp.com/word',
             data: {
               firstName: 'Finn',
               lastName: 'Williams'

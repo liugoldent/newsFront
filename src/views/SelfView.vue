@@ -18,7 +18,7 @@ export default {
         function get() {
           proxy.axios({
             method: 'get',
-            url: '/'
+            url: 'https://news-backend-g.herokuapp.com/'
           }).then(res=>{
             console.log(res);
             // let { data } = res.data

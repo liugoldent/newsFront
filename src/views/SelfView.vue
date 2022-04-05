@@ -14,7 +14,6 @@ export default {
         const increment = () => count.value++;
 
         const { proxy } = getCurrentInstance()
-        console.log(proxy.envURL)
 
         function get() {
           proxy.axios({

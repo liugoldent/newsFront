@@ -13,12 +13,13 @@ export default {
         const count = ref(0);
         const increment = () => count.value++;
 
-
         const { proxy } = getCurrentInstance()
+        console.log(proxy.envURL)
+
         function get() {
           proxy.axios({
             method: 'get',
-            url: 'https://news-backend-g.herokuapp.com/'
+            url: `${proxy.envURL}`
           }).then(res=>{
             console.log(res);
             // let { data } = res.data
@@ -32,7 +33,7 @@ export default {
         function post() {
           proxy.axios({
             method: 'post',
-            url: 'https://news-backend-g.herokuapp.com/word',
+            url: `${proxy.envURL}/word`,
             data: {
               firstName: 'Finn',
               lastName: 'Williams'

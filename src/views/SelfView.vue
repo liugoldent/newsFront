@@ -18,7 +18,11 @@ export default {
         function get() {
           proxy.axios({
             method: 'get',
-            url: `${proxy.envURL}`
+            url: `${proxy.envURL}`,
+            data: {
+              firstName: 'Finn',
+              lastName: 'Williams'
+            }
           }).then(res=>{
             console.log(res);
             // let { data } = res.data

@@ -18,7 +18,7 @@ export default {
         function get() {
           proxy.axios({
             method: 'get',
-            url: `${proxy.envURL}`
+            url: `${proxy.envURL}/stockApi/investDB/local_listed`
           }).then(res=>{
             console.log(res);
             // let { data } = res.data

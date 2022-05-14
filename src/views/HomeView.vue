@@ -1,9 +1,9 @@
 <script setup>
-import TheWelcome from '@/components/TheWelcome.vue'
+import HomeCardVue from '../components/HomeCard.vue';
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <div class="flex flex-row place-content-center">
+    <HomeCardVue />
+  </div>
 </template>

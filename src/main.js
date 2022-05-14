@@ -3,6 +3,8 @@ import { createPinia } from 'pinia'
 import axios from 'axios'
 import App from './App.vue'
 import router from './router'
+import './index.css'
+
 console.log(process.env.NODE_ENV);
 const app = createApp(App)
 

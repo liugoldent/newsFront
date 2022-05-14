@@ -2,21 +2,26 @@
   <div class="about">
     <h1>This is an self page</h1>
     <button @click="get">Get Func</button>
-    <button @click="post">Post Func</button>
+    <button @click="testAwaitPinia">testAwaitPinia</button>
+    <button @click="testPinia">TestPinia</button>
+    base：{{ useGetTech.counter }} double: {{ useGetTech.double }}
+    {{ useGetTech }}
     <ol>
-      <li v-for="(data,index) in buy_page_list">
+      <li v-for="data in buy_page_list" :key="data.name">
         {{ data.name }}
       </li>
     </ol>
     <ol>
-      <li v-for="(data,index) in sell_page_list">
+      <li v-for="data in sell_page_list" :key="data.name">
         {{ data.name }}
       </li>
     </ol>
+    <h1 class="text-3xl font-bold underline">Hello world!</h1>
   </div>
 </template>
 <script>
 import { ref, getCurrentInstance, onMounted, reactive } from "vue";
+import useGetTechSheet from "@/stores/getTechSheet";
 export default {
   setup() {
     // 設定API
@@ -24,30 +29,14 @@ export default {
     const getInvestLocal = proxy.axios.get(
       `${proxy.envURL}/stockApi/sheetData/invest/local_listed`
     );
-    // const tech_avg_url = `${proxy.envURL}/stockApi/sheetData/tech/avg`
-    // const tech_local_url = `${proxy.envURL}/stockApi/sheetData/tech/local_buy_sell`
-    // const tech_foreign_url = `${proxy.envURL}/stockApi/sheetData/tech/foreign_buy_sell`
-    const kd_promise = proxy.axios.get(
-      `${proxy.envURL}/stockApi/sheetData/tech/kd`
-    );
-    // const macd_promise = proxy.axios.get(
-    //   `${proxy.envURL}/stockApi/sheetData/tech/macd`
-    // );
+    // 設定pinia
+    const useGetTech = useGetTechSheet();
 
-    // 設定template資料
+    // 各function開始
     let buy_page_list = ref([]);
     let sell_page_list = ref([]);
-
     const get = async function () {
       try {
-        // 技術分析的api請求
-        const [kd_condition] = await Promise.all([kd_promise])
-          .then((values) => {
-            return values;
-          })
-          .catch((err) => {
-            throw err;
-          });
         // 法人一日買賣超的api請求
         const { data } = await getInvestLocal;
         const { sheetsData } = data;
@@ -83,26 +72,26 @@ export default {
       }
       return result;
     }
-    function post() {
-      proxy
-        .axios({
-          method: "post",
-          url: `${proxy.envURL}/word`,
-          data: {
-            firstName: "Finn",
-            lastName: "Williams",
-          },
-        })
-        .then((res) => {
-          console.log(res);
-          // let { data } = res.data
-          // console.log(data)
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    async function testAwaitPinia() {
+      try {
+        await useGetTech.getSheetData();
+      } catch (error) {
+        alert(error);
+      }
     }
-    return { get, post, buy_page_list, sell_page_list };
+
+    const testPinia = async function () {
+      await useGetTech.increment();
+    };
+
+    return {
+      get,
+      testAwaitPinia,
+      buy_page_list,
+      sell_page_list,
+      testPinia,
+      useGetTech,
+    };
   },
 };
 </script>

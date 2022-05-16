@@ -4,13 +4,21 @@
       <ul
         class="flex flex-wrap items-center mb-6 text-sm text-gray-500 sm:mb-0"
       >
-        <li>
-          <a class="mr-4 hover:underline md:mr-6">Stock</a>
+      <li>
+          <router-link to="/"><a class="mr-4 hover:underline md:mr-6">Home</a></router-link>
         </li>
         <li>
-          <a class="mr-4 hover:underline md:mr-6">熱搜關鍵字</a>
+          <router-link to="/stock"><a class="mr-4 hover:underline md:mr-6">Stock</a></router-link>
+        </li>
+        <li>
+          <router-link to="/trend"><a class="mr-4 hover:underline md:mr-6">熱搜關鍵字</a></router-link>
         </li>
       </ul>
     </div>
   </header>
 </template>
+<script>
+import { RouterLink } from 'vue-router'
+
+</script>
+

@@ -1,0 +1,66 @@
+<template>
+  <div class="my-5 mx-10 relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table
+      class="text-sm text-left text-gray-500 dark:text-gray-400 table-auto"
+    >
+      <thead
+        class="
+          text-xs text-gray-700
+          uppercase
+          bg-gray-50
+          dark:bg-gray-700 dark:text-gray-400
+        "
+      >
+        <tr>
+          <th scope="col" class="px-6 py-3 text-center">排名</th>
+          <th scope="col" class="px-6 py-3 text-center">代號</th>
+          <th scope="col" class="px-6 py-3 text-center w-56">名稱</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="
+            border-b
+            dark:bg-gray-800 dark:border-gray-700
+            text-center
+            cursor-pointer
+            hover:bg-sky-100
+          "
+          v-for="eachData in chi_investData"
+          :key="eachData.name"
+        >
+          <th
+            scope="row"
+            class="
+              px-10
+              py-4
+              font-medium
+              text-gray-900
+              dark:text-white
+              whitespace-nowrap
+            "
+          >
+            {{ eachData.no || '' }}
+          </th>
+          <td class="px-10 py-4">{{ eachData.code || '' }}</td>
+          <td class="px-10 py-4">{{ eachData.name || '' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+<script>
+import { computed } from 'vue'
+export default {
+  name: 'StockInvestDBTable',
+  // 子組件通過 props 來接收
+  props: ['investData'],
+  setup(props) {
+    // 從父組件拿到的資料
+    const chi_investData = computed(() => props.investData)
+    return {
+      chi_investData,
+    }
+  },
+}
+</script>

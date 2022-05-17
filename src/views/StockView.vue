@@ -1,8 +1,10 @@
 <template>
   <div class="flex flex-col justify-start items-center">
-    <div class="m-5">
-      <button @click="getInvest('local_listed')">Get Func</button>
-      <button @click="getInvest('local_otc')">Get2 Func</button>
+    <div>
+      <button @click="getInvest('local_listed')" class="m-8">上市投信買賣超</button>
+      <button @click="getInvest('local_otc')" class="m-8">上櫃投信買賣超</button>
+      <button @click="getInvest('foreign_listed')" class="m-8">上市外資買賣超</button>
+      <button @click="getInvest('foreign_otc')" class="m-8">上櫃外資買賣超</button>
     </div>
     <div class="flex flex-row justify-center items-start" v-if="buy_page_list.length > 0">
       <StockInvestDBTableVue :investData="buy_page_list" />
@@ -32,6 +34,12 @@ export default {
       local_otc: proxy.axios.get(
         `${proxy.envURL}/stockApi/sheetData/invest/local_otc`
       ),
+      foreign_listed: proxy.axios.get(
+        `${proxy.envURL}/stockApi/sheetData/invest/foreign_listed`
+      ),
+      foreign_otc: proxy.axios.get(
+        `${proxy.envURL}/stockApi/sheetData/invest/foreign_otc`
+      ),
     }
     // 設定pinia
     // const useGetTech = useGetTechSheet();
@@ -44,6 +52,8 @@ export default {
         // 法人一日買賣超的api請求
         const { data } = await typeSelect[investType]
         const { sheetsData } = data
+                console.log('data',sheetsData)
+
         buy_page_list.value = composeBaseBuySell(
           sheetsData[`${investType}_buy_no`],
           sheetsData[`${investType}_buy_code`],

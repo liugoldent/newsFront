@@ -5,10 +5,10 @@ import HomeCardVue from '../components/HomeCard.vue'
 
 <template>
   <div class="flex flex-wrap flex-col place-content-center h-max">
-    <div class="text-center m-5">
+    <div class="text-center m-8">
       <h1 class="text-9xl font-Monoton">News</h1>
     </div>
-    <div class="flex flex-row flex-wrap justify-center items-center m-5 h-auto">
+    <div class="flex flex-row flex-wrap justify-center items-center m-8 h-auto">
       <router-link to="/stock"><HomeCardVue /></router-link>
       <router-link to="/trend"><HomeCardVue /></router-link>
       <HomeCardVue />
@@ -20,8 +20,6 @@ import HomeCardVue from '../components/HomeCard.vue'
       <HomeCardVue />
       <HomeCardVue />
       <HomeCardVue />
-
-
     </div>
     <!-- <RouterView /> -->
   </div>

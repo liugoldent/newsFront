@@ -21,7 +21,6 @@ import HomeCardVue from '../components/HomeCard.vue'
       <HomeCardVue />
       <HomeCardVue />
     </div>
-    <!-- <RouterView /> -->
   </div>
 </template>
 

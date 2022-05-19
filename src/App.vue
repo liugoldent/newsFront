@@ -10,7 +10,7 @@ import FooterVue from './components/Footer.vue'
   <div class="flex flex-col justify-between h-screen">
     <HeaderVue />
     <RouterView> </RouterView>
-    <FooterVue />
+    <FooterVue class="mt-auto"/>
   </div>
 </template>
 

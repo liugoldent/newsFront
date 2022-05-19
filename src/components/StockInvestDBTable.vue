@@ -54,10 +54,26 @@ import { computed } from 'vue'
 export default {
   name: 'StockInvestDBTable',
   // 子組件通過 props 來接收
-  props: ['investData'],
+  props: ['investData', 'conditionStatus'],
   setup(props) {
     // 從父組件拿到的資料
-    const chi_investData = computed(() => props.investData)
+    const chi_investData = computed(() => {
+      return props.investData.filter((data) => {
+        const techSet = new Set(data.tech)
+        const conditionSet = new Set(props.conditionStatus)
+        const intersection = getIntersection(techSet, conditionSet)
+        if(intersection.size === conditionSet.size || conditionSet.size === 0){
+          return data
+        }
+      })
+    })
+
+    function getIntersection(setA, setB) {
+      const intersection = new Set(
+        [...setA].filter((element) => setB.has(element))
+      )
+      return intersection
+    }
     return {
       chi_investData,
     }

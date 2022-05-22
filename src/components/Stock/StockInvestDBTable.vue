@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-10 relative overflow-x-auto shadow-md sm:rounded-lg">
+  <div class="mx-10 relative overflow-x-auto shadow-md sm:rounded-lg ">
     <table
       class="text-sm text-left text-gray-500 dark:text-gray-400 table-auto"
     >
@@ -24,9 +24,11 @@
             dark:bg-gray-800 dark:border-gray-700
             text-center
             cursor-pointer
-            hover:bg-sky-100
+            hover:bg-sky-200
+            ease-in-out duration-500
           "
           v-for="eachData in chi_investData"
+          @click="emit('openModal',eachData)"
           :key="eachData.name"
         >
           <th
@@ -55,7 +57,7 @@ export default {
   name: 'StockInvestDBTable',
   // 子組件通過 props 來接收
   props: ['investData', 'conditionStatus'],
-  setup(props) {
+  setup(props, { emit }) {
     // 從父組件拿到的資料
     const chi_investData = computed(() => {
       return props.investData.filter((data) => {
@@ -68,7 +70,7 @@ export default {
       })
     })
 
-    function getIntersection(setA, setB) {
+    const getIntersection = function (setA, setB) {
       const intersection = new Set(
         [...setA].filter((element) => setB.has(element))
       )
@@ -76,6 +78,7 @@ export default {
     }
     return {
       chi_investData,
+      emit
     }
   },
 }

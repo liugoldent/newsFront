@@ -1,6 +1,5 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-
 import HomeViewVue from './views/HomeView.vue'
 import HeaderVue from './components/Header.vue'
 import FooterVue from './components/Footer.vue'
@@ -10,7 +9,7 @@ import FooterVue from './components/Footer.vue'
   <div class="flex flex-col justify-between h-screen">
     <HeaderVue />
     <RouterView> </RouterView>
-    <FooterVue class="mt-auto"/>
+    <FooterVue class="mt-auto" />
   </div>
 </template>
 

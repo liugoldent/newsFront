@@ -4,10 +4,12 @@ import axios from 'axios'
 import App from './App.vue'
 import router from './router'
 import './index.css'
+import * as sharedModule_str  from './public/stringConvert'
 
 console.log(process.env.NODE_ENV);
 const app = createApp(App)
 
+app.config.globalProperties.sharedModule_str = sharedModule_str
 app.config.globalProperties.axios = axios
 app.config.globalProperties.envURL =
     process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8080' : 'https://news-backend-g.herokuapp.com';

@@ -98,7 +98,7 @@
                     rounded
                     dark:bg-gray-700 dark:text-gray-400
                   "
-                  ><v-icon name="beer" />
+                  ><font-awesome-icon icon="link" />
                 </span>
               </a>
             </li>
@@ -109,6 +109,10 @@
   </div>
 </template>
 <script>
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faLink } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faLink)
 export default {
   name: 'StockModalLink',
   props: ['propsToModal', 'linkWeb'],

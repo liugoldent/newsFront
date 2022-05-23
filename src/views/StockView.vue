@@ -1,19 +1,27 @@
 <template>
   <div class="flex flex-col justify-start items-center">
-    <!-- :class="{ 'bg-gray-900/70': modalStatus}" -->
     <!-- 上方button -->
     <div class="flex flex-row justify-center items-center">
-      <button @click="getInvestSheetData('local_listed')" class="m-4">
-        上市投信買賣超
-      </button>
-      <button @click="getInvestSheetData('local_otc')" class="m-4">
-        上櫃投信買賣超
-      </button>
-      <button @click="getInvestSheetData('foreign_listed')" class="m-4">
-        上市外資買賣超
-      </button>
-      <button @click="getInvestSheetData('foreign_otc')" class="m-4">
-        上櫃外資買賣超
+      <button
+        @click="getInvestSheetData(content.key)"
+        class="m-8 rounded-md border border-gray-300 p-2"
+        v-for="content in buttonContent"
+        :key="content.key"
+      >
+        <font-awesome-icon
+          icon="arrow-trend-up"
+          v-if="selectedButton === content.key"
+          style="color:red"
+          class="mr-2"
+        />
+        <p
+          class="inline"
+          :class="{
+            'underline underline-offset-2 text-red-600': selectedButton === content.key,
+          }"
+        >
+          {{ content.name }}
+        </p>
       </button>
     </div>
     <!-- 左方filter list -->
@@ -45,8 +53,10 @@
       />
     </div>
   </div>
-  <div v-if="modalStatus" class="fixed h-full w-full bg-gray-900/70 bg-cover z-20"></div>
-
+  <div
+    v-if="modalStatus"
+    class="fixed h-full w-full bg-gray-900/70 bg-cover z-20"
+  ></div>
 </template>
 <script>
 import StockInvestDBTableVue from '../components/Stock/StockInvestDBTable.vue'
@@ -54,6 +64,10 @@ import StockFilterListVue from '../components/Stock/StockFilterList.vue'
 import StockModalLink from '../components/Stock/StockModalLink.vue'
 import { ref, getCurrentInstance, onMounted, computed } from 'vue'
 import useGetTechSheet from '@/stores/getTechSheet'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faArrowTrendUp } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faArrowTrendUp)
 export default {
   components: {
     StockInvestDBTableVue,
@@ -83,19 +97,19 @@ export default {
       useGetTech.getSheetData()
     })
 
-    // 各function開始
-    let buy_page_list = ref([])
-    let sell_page_list = ref([])
     /**
      * @description 設定api 與 template 連結
      * @param {*} investType
      */
+    let buy_page_list = ref([])
+    let sell_page_list = ref([])
+    let selectedButton = ref('')
     const getInvestSheetData = async function (investType) {
       try {
         // 法人一日買賣超的api請求
         const { data } = await typeSelect[investType]
         const { sheetsData } = data
-
+        selectedButton.value = investType
         buy_page_list.value = composeBaseBuySell(
           sheetsData[`${investType}_buy_no`],
           sheetsData[`${investType}_buy_code`],
@@ -165,18 +179,18 @@ export default {
       if (avg_deathSet.has(name)) {
         techResult.push('avg_death')
       }
-      // if (localBuySet.has(name)) {
-      //   techResult.push('投信連續買超')
-      // }
-      // if (localSellSet.has(name)) {
-      //   techResult.push('投信連續賣超')
-      // }
-      // if (foreignBuySet.has(name)) {
-      //   techResult.push('外資連續買超')
-      // }
-      // if (foreignSellSet.has(name)) {
-      //   techResult.push('外資連續賣超')
-      // }
+      if (local_c_buySet.has(name)) {
+        techResult.push('local_buy')
+      }
+      if (local_c_sellSet.has(name)) {
+        techResult.push('local_sell')
+      }
+      if (foreign_c_buySet.has(name)) {
+        techResult.push('foreign_buy')
+      }
+      if (foreign_c_sellSet.has(name)) {
+        techResult.push('foreign_sell')
+      }
       return techResult
     }
     /**
@@ -243,7 +257,9 @@ export default {
       console.log('data', emitFromTableData.code)
       modalStatus.value = emitFromTableData.name.length > 0 ? true : false
     }
-
+    /**
+     * @description 設定連結的web
+     */
     let linkWeb = ref([])
     linkWeb.value = [
       {
@@ -281,6 +297,33 @@ export default {
         frontHref: 'https://mis.twse.com.tw/stock/fibest.jsp?stock=',
         backHref: '',
       },
+      {
+        name: '股市爆料同學會',
+        frontHref: 'https://www.cmoney.tw/forum/stock/',
+        backHref: '',
+      },
+    ]
+    /**
+     * @description 上方button的資料
+     */
+    let buttonContent = ref([])
+    buttonContent.value = [
+      {
+        name: '上市投信買賣超',
+        key: 'local_listed',
+      },
+      {
+        name: '上櫃投信買賣超',
+        key: 'local_otc',
+      },
+      {
+        name: '上市外資買賣超',
+        key: 'foreign_listed',
+      },
+      {
+        name: '上櫃外資買賣超',
+        key: 'foreign_otc',
+      },
     ]
     return {
       getInvestSheetData, // 取得法人買賣超資料（打api
@@ -293,6 +336,8 @@ export default {
       modalStatus, // modal的開啟狀況
       propsToModal, // 給modal的資料
       linkWeb, // 給modal的連結資料
+      buttonContent, // 上方 button的資料
+      selectedButton, // 點選到的button
     }
   },
 }

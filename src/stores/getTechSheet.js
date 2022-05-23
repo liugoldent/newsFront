@@ -24,12 +24,12 @@ const useGetTechSheet = defineStore('getTechSheet', function () {
   const avg_promise = proxy.axios.get(
     `${proxy.envURL}/stockApi/sheetData/tech/avg`
   )
-  // const local_promise = proxy.axios.get(
-  //   `${proxy.envURL}/stockApi/sheetData/tech/local_buy_sell`
-  // )
-  // const foreign_promise = proxy.axios.get(
-  //   `${proxy.envURL}/stockApi/sheetData/tech/foreign_buy_sell`
-  // )
+  const local_promise = proxy.axios.get(
+    `${proxy.envURL}/stockApi/sheetData/tech/local_buy_sell`
+  )
+  const foreign_promise = proxy.axios.get(
+    `${proxy.envURL}/stockApi/sheetData/tech/foreign_buy_sell`
+  )
 
   const getSheetData = async function () {
     try {
@@ -37,8 +37,8 @@ const useGetTechSheet = defineStore('getTechSheet', function () {
         kd_promise,
         macd_promise,
         avg_promise,
-        // local_promise,
-        // foreign_promise,
+        local_promise,
+        foreign_promise,
       ])
         .then((res) => {
           kd_gold.value = res[0].data.sheetsData.kd_gold_stock_name
@@ -47,10 +47,10 @@ const useGetTechSheet = defineStore('getTechSheet', function () {
           macd_death.value = res[1].data.sheetsData.macd_death_stock_name
           avg_gold.value = res[2].data.sheetsData.avg_gold_stock_name
           avg_death.value = res[2].data.sheetsData.avg_death_stock_name
-          // local_c_buy.value = res[3].data.sheetsData.buy_stock_name
-          // local_c_sell.value = res[3].data.sheetsData.sell_stock_name
-          // foreign_c_buy.value = res[4].data.sheetsData.buy_stock_name
-          // foreign_c_sell.value = res[4].data.sheetsData.sell_stock_name
+          local_c_buy.value = res[3].data.sheetsData.buy_stock_name
+          local_c_sell.value = res[3].data.sheetsData.sell_stock_name
+          foreign_c_buy.value = res[4].data.sheetsData.buy_stock_name
+          foreign_c_sell.value = res[4].data.sheetsData.sell_stock_name
           console.log('get SheetData')
           return res
         })

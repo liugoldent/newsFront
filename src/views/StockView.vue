@@ -1,5 +1,7 @@
 <template>
   <div class="flex flex-col justify-start items-center">
+    <!-- :class="{ 'bg-gray-900/70': modalStatus}" -->
+    <!-- 上方button -->
     <div class="flex flex-row justify-center items-center">
       <button @click="getInvestSheetData('local_listed')" class="m-4">
         上市投信買賣超
@@ -14,12 +16,14 @@
         上櫃外資買賣超
       </button>
     </div>
-    <div class="fixed left-0 top-1/4 z-40">
+    <!-- 左方filter list -->
+    <div class="fixed left-0 top-1/4 z-10">
       <StockFilterListVue
         :techList="techList"
         @postFilterCondition="updateFilterCondition"
       />
     </div>
+    <!-- 主要內容table -->
     <div class="flex flex-row justify-center items-start w-full">
       <StockInvestDBTableVue
         :investData="buy_page_list"
@@ -32,13 +36,17 @@
         @openModal="troggleModalF"
       />
     </div>
-    <StockModalLink
-      v-if="modalStatus"
-      @closeModal="troggleModalF"
-      :propsToModal="propsToModal"
-      :linkWeb="linkWeb"
-    />
+    <!-- 跳窗 -->
+    <div class="fixed top-50 z-30" v-if="modalStatus">
+      <StockModalLink
+        @closeModal="troggleModalF"
+        :propsToModal="propsToModal"
+        :linkWeb="linkWeb"
+      />
+    </div>
   </div>
+  <div v-if="modalStatus" class="fixed h-full w-full bg-gray-900/70 bg-cover z-20"></div>
+
 </template>
 <script>
 import StockInvestDBTableVue from '../components/Stock/StockInvestDBTable.vue'

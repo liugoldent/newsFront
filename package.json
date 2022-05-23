@@ -7,6 +7,11 @@
     "preview": "vite preview --port 5050 --host"
   },
   "dependencies": {
+    "@fortawesome/fontawesome": "^1.1.8",
+    "@fortawesome/fontawesome-free-brands": "^5.0.13",
+    "@fortawesome/fontawesome-free-regular": "^5.0.13",
+    "@fortawesome/fontawesome-free-solid": "^5.0.13",
+    "@fortawesome/vue-fontawesome": "^2.0.6",
     "axios": "^0.26.1",
     "pinia": "^2.0.11",
     "vue": "^3.2.31",

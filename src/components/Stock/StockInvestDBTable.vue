@@ -1,5 +1,8 @@
 <template>
-  <div class="mx-10 relative overflow-x-auto shadow-md sm:rounded-lg ">
+  <div class="mx-10 relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="p-2 bg-gray-900 h-auto w-auto">
+      <p class="text-center text-xl text-gray-50">{{ title }}</p>
+    </div>
     <table
       class="text-sm text-left text-gray-500 dark:text-gray-400 table-auto"
     >
@@ -25,10 +28,11 @@
             text-center
             cursor-pointer
             hover:bg-sky-200
-            ease-in-out duration-500
+            ease-in-out
+            duration-500
           "
           v-for="eachData in chi_investData"
-          @click="emit('openModal',eachData)"
+          @click="emit('openModal', eachData)"
           :key="eachData.name"
         >
           <th
@@ -56,7 +60,7 @@ import { computed } from 'vue'
 export default {
   name: 'StockInvestDBTable',
   // 子組件通過 props 來接收
-  props: ['investData', 'conditionStatus'],
+  props: ['investData', 'conditionStatus', 'title'],
   setup(props, { emit }) {
     // 從父組件拿到的資料
     const chi_investData = computed(() => {
@@ -64,7 +68,10 @@ export default {
         const techSet = new Set(data.tech)
         const conditionSet = new Set(props.conditionStatus)
         const intersection = getIntersection(techSet, conditionSet)
-        if(intersection.size === conditionSet.size || conditionSet.size === 0){
+        if (
+          intersection.size === conditionSet.size ||
+          conditionSet.size === 0
+        ) {
           return data
         }
       })
@@ -78,7 +85,7 @@ export default {
     }
     return {
       chi_investData,
-      emit
+      emit,
     }
   },
 }

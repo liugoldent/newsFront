@@ -11,13 +11,14 @@
         <font-awesome-icon
           icon="arrow-trend-up"
           v-if="selectedButton === content.key"
-          style="color:red"
+          style="color: red"
           class="mr-2"
         />
         <p
           class="inline"
           :class="{
-            'underline underline-offset-2 text-red-600': selectedButton === content.key,
+            'underline underline-offset-2 text-red-600':
+              selectedButton === content.key,
           }"
         >
           {{ content.name }}
@@ -35,11 +36,13 @@
     <div class="flex flex-row justify-center items-start w-full">
       <StockInvestDBTableVue
         :investData="buy_page_list"
+        title="買超"
         :conditionStatus="conditionStatus"
         @openModal="troggleModalF"
       />
       <StockInvestDBTableVue
         :investData="sell_page_list"
+        title="賣超"
         :conditionStatus="conditionStatus"
         @openModal="troggleModalF"
       />
@@ -106,6 +109,11 @@ export default {
     let selectedButton = ref('')
     const getInvestSheetData = async function (investType) {
       try {
+        if(investType === 'localForeign_same') {
+          selectedButton.value = investType
+          composeSameArray()
+          return
+        }
         // 法人一日買賣超的api請求
         const { data } = await typeSelect[investType]
         const { sheetsData } = data
@@ -120,7 +128,6 @@ export default {
           sheetsData[`${investType}_sell_code`],
           sheetsData[`${investType}_sell_name`]
         )
-        console.log('buy_page_list', buy_page_list)
       } catch (error) {
         console.error(error)
       }
@@ -244,7 +251,6 @@ export default {
     const conditionStatus = ref([])
     const updateFilterCondition = function (result) {
       conditionStatus.value = result.value
-      console.log(result.value)
     }
     /**
      * @description 接收子組件上來的資料，並且開啟/關閉視窗
@@ -254,7 +260,6 @@ export default {
     let propsToModal = ref({})
     const troggleModalF = function (emitFromTableData) {
       propsToModal.value = emitFromTableData
-      console.log('data', emitFromTableData.code)
       modalStatus.value = emitFromTableData.name.length > 0 ? true : false
     }
     /**
@@ -324,11 +329,74 @@ export default {
         name: '上櫃外資買賣超',
         key: 'foreign_otc',
       },
+      {
+        name: '外資投信同步買賣超',
+        key: 'localForeign_same',
+      },
     ]
+    /**
+     * 組成上市外資投信同買資料
+     */
+    const composeSameArray = async function () {
+      const [local_listed, local_otc, foreign_listed, foreign_otc] =
+        await Promise.all([
+          typeSelect['local_listed'],
+          typeSelect['local_otc'],
+          typeSelect['foreign_listed'],
+          typeSelect['foreign_otc'],
+        ])
+      const buyRes = concatArr(
+        [
+          local_listed.data,
+          local_otc.data,
+          foreign_listed.data,
+          foreign_otc.data,
+        ],
+        'buy'
+      )
+      const sellRes = concatArr(
+        [
+          local_listed.data,
+          local_otc.data,
+          foreign_listed.data,
+          foreign_otc.data,
+        ],
+        'sell'
+      )
+      buy_page_list.value = composeBaseBuySell(
+        buyRes.no,
+        buyRes.code,
+        buyRes.name
+      )
+      sell_page_list.value = composeBaseBuySell(
+        sellRes.no,
+        sellRes.code,
+        sellRes.name
+      )
+    }
+    const concatArr = function (arrList, type) {
+      let name = []
+      let code = []
+      let no = []
+      for (let i = 0, len = arrList.length; i < len; i++) {
+        name.push(...arrList[i].sheetsData[`${arrList[i].type}_${type}_name`])
+        code.push(...arrList[i].sheetsData[`${arrList[i].type}_${type}_code`])
+      }
+      name = name.filter((item, index) => name.indexOf(item) !== index)
+      code = code.filter((item, index) => code.indexOf(item) !== index)
+      no = name.map((index) => no.push(index))
+
+      return {
+        name,
+        code,
+        no,
+      }
+    }
     return {
       getInvestSheetData, // 取得法人買賣超資料（打api
       updateFilterCondition, // 更新使用者選到的指標function
       troggleModalF, // emit上來的function，目的是用於開啟關閉視窗
+      composeSameArray, // 用來測試api資料
       conditionStatus, // client選擇到的技術分析指標
       buy_page_list, // 法人買超資料
       sell_page_list, // 法人賣超資料

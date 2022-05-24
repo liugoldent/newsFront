@@ -51,7 +51,7 @@ const useGetTechSheet = defineStore('getTechSheet', function () {
           local_c_sell.value = res[3].data.sheetsData.sell_stock_name
           foreign_c_buy.value = res[4].data.sheetsData.buy_stock_name
           foreign_c_sell.value = res[4].data.sheetsData.sell_stock_name
-          console.log('get SheetData')
+          console.log('get TechData OK')
           return res
         })
         .catch((err) => {

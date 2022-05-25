@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-col justify-start items-center">
     <!-- 上方button -->
-    <div class="flex flex-row justify-center items-center">
+    <div class="flex md:flex-row justify-center items-center sm:flex-col">
       <button
         @click="getInvestSheetData(content.key)"
-        class="m-8 rounded-md border border-gray-300 p-2"
+        class="m-8 rounded-md border border-gray-300 p-2 sm:m-1"
         v-for="content in buttonContent"
         :key="content.key"
       >
@@ -33,18 +33,28 @@
       />
     </div>
     <!-- 主要內容table -->
-    <div class="flex flex-row justify-center items-start w-full">
+    <div
+      class="
+        flex flex-row
+        justify-center
+        items-start
+        w-full
+        sm:flex-col sm:items-center
+      "
+    >
       <StockInvestDBTableVue
         :investData="buy_page_list"
         title="買超"
         :conditionStatus="conditionStatus"
         @openModal="troggleModalF"
+        class="sm:mt-2"
       />
       <StockInvestDBTableVue
         :investData="sell_page_list"
         title="賣超"
         :conditionStatus="conditionStatus"
         @openModal="troggleModalF"
+        class="sm:mt-2"
       />
     </div>
     <!-- 跳窗 -->
@@ -78,26 +88,15 @@ export default {
     StockModalLink,
   },
   setup() {
-    // 設定API
+    // 設定 proxy
     const { proxy } = getCurrentInstance()
-    const typeSelect = {
-      local_listed: proxy.axios.get(
-        `${proxy.envURL}/stockApi/sheetData/invest/local_listed`
-      ),
-      local_otc: proxy.axios.get(
-        `${proxy.envURL}/stockApi/sheetData/invest/local_otc`
-      ),
-      foreign_listed: proxy.axios.get(
-        `${proxy.envURL}/stockApi/sheetData/invest/foreign_listed`
-      ),
-      foreign_otc: proxy.axios.get(
-        `${proxy.envURL}/stockApi/sheetData/invest/foreign_otc`
-      ),
-    }
+    const investAllData = proxy.axios.get(
+      `${proxy.envURL}/stockApi/sheetData/invest`
+    )
     // 讓 pinia 先去跑google sheets 來拿到資料
     const useGetTech = useGetTechSheet()
     onMounted(async () => {
-      useGetTech.getSheetData()
+      await useGetTech.getSheetData()
     })
 
     /**
@@ -109,24 +108,23 @@ export default {
     let selectedButton = ref('')
     const getInvestSheetData = async function (investType) {
       try {
-        if(investType === 'localForeign_same') {
+        if (investType === 'localForeign_same') {
           selectedButton.value = investType
           composeSameArray()
           return
         }
         // 法人一日買賣超的api請求
-        const { data } = await typeSelect[investType]
-        const { sheetsData } = data
+        const { data } = await investAllData
         selectedButton.value = investType
         buy_page_list.value = composeBaseBuySell(
-          sheetsData[`${investType}_buy_no`],
-          sheetsData[`${investType}_buy_code`],
-          sheetsData[`${investType}_buy_name`]
+          data[`${investType}`][`${investType}_buy_no`],
+          data[`${investType}`][`${investType}_buy_code`],
+          data[`${investType}`][`${investType}_buy_name`]
         )
         sell_page_list.value = composeBaseBuySell(
-          sheetsData[`${investType}_sell_no`],
-          sheetsData[`${investType}_sell_code`],
-          sheetsData[`${investType}_sell_name`]
+          data[`${investType}`][`${investType}_sell_no`],
+          data[`${investType}`][`${investType}_sell_code`],
+          data[`${investType}`][`${investType}_sell_name`]
         )
       } catch (error) {
         console.error(error)
@@ -338,28 +336,23 @@ export default {
      * 組成上市外資投信同買資料
      */
     const composeSameArray = async function () {
-      const [local_listed, local_otc, foreign_listed, foreign_otc] =
-        await Promise.all([
-          typeSelect['local_listed'],
-          typeSelect['local_otc'],
-          typeSelect['foreign_listed'],
-          typeSelect['foreign_otc'],
-        ])
+      const { data } = await investAllData
+
       const buyRes = concatArr(
         [
-          local_listed.data,
-          local_otc.data,
-          foreign_listed.data,
-          foreign_otc.data,
+          data['local_listed'],
+          data['local_otc'],
+          data['foreign_listed'],
+          data['foreign_otc'],
         ],
         'buy'
       )
       const sellRes = concatArr(
         [
-          local_listed.data,
-          local_otc.data,
-          foreign_listed.data,
-          foreign_otc.data,
+          data['local_listed'],
+          data['local_otc'],
+          data['foreign_listed'],
+          data['foreign_otc'],
         ],
         'sell'
       )
@@ -379,8 +372,8 @@ export default {
       let code = []
       let no = []
       for (let i = 0, len = arrList.length; i < len; i++) {
-        name.push(...arrList[i].sheetsData[`${arrList[i].type}_${type}_name`])
-        code.push(...arrList[i].sheetsData[`${arrList[i].type}_${type}_code`])
+        name.push(...arrList[i][`${arrList[i].type}_${type}_name`])
+        code.push(...arrList[i][`${arrList[i].type}_${type}_code`])
       }
       name = name.filter((item, index) => name.indexOf(item) !== index)
       code = code.filter((item, index) => code.indexOf(item) !== index)

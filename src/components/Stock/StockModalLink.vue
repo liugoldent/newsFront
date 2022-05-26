@@ -53,12 +53,9 @@
           </h3>
         </div>
         <!-- Modal body -->
-        <div class="p-6">
-          <!-- <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
-            選擇一個分析網站吧！
-          </p> -->
+        <div class="p-6 sm:h-96 sm:overflow-y-scroll">
           <ul
-            class="my-4 space-y-3"
+            class="my-4 space-y-3 "
             v-for="eachWeb in linkWeb"
             :key="eachWeb.name"
           >

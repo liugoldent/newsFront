@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-start items-start">
+  <div class="flex flex-col justify-start items-end bg-slate-300 rounded-md p-2">
     <button
       v-for="data in chi_techList"
       :key="data.name"
@@ -8,7 +8,7 @@
     >
       <span
         :class="[selectedBgClass(data.key), commonClass()]"
-        class="ease-in-out duration-500"
+        class="ease-in-out duration-500 border-gray-500"
         >{{ data.name }}</span
       >
     </button>

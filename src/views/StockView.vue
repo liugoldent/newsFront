@@ -1,10 +1,67 @@
 <template>
   <div class="flex flex-col justify-start items-center">
     <!-- 上方button -->
-    <div class="flex md:flex-row justify-center items-center sm:flex-col">
+    <div class="flex flex-row justify-between w-full fixed z-10 m-10">
+      <button
+        @click="toggleInvestStatus = !toggleInvestStatus"
+        class="
+          ml-2
+          px-6
+          py-2
+          text-sm
+          transition-colors
+          duration-300
+          rounded rounded-full
+          shadow-xl
+          bg-slate-500
+          hover:bg-slate-600
+          text-slate-100
+          shadow-slate-400
+        "
+      >
+        <font-awesome-icon icon="list" class="mr-2" />法人買賣超 - 選單
+      </button>
+      <button
+        @click="toggleTechStatus = !toggleTechStatus"
+        class="
+          mr-2
+          px-6
+          py-2
+          text-sm
+          transition-colors
+          duration-300
+          rounded rounded-full
+          shadow-xl
+          bg-slate-500
+          hover:bg-slate-600
+          text-slate-100
+          shadow-slate-400
+        "
+      >
+        <font-awesome-icon icon="list" class="mr-2" />技術分析 - 選單
+      </button>
+    </div>
+    <!-- 左方選單List -->
+    <div
+      class="
+        flex flex-col
+        justify-center
+        items-start
+        bg-slate-300
+        opacity-90
+        fixed
+        left-0
+        z-10
+        my-20
+        p-4
+        rounded-md
+        duration-500
+      "
+      :class="{ '-translate-x-full': toggleInvestStatus }"
+    >
       <button
         @click="getInvestSheetData(content.key)"
-        class="m-8 rounded-md border border-gray-300 p-2 sm:m-1"
+        class="rounded-md border border-gray-500 p-2 mb-1"
         v-for="content in buttonContent"
         :key="content.key"
       >
@@ -14,7 +71,7 @@
           style="color: red"
           class="mr-2"
         />
-        <p
+        <span
           class="inline"
           :class="{
             'underline underline-offset-2 text-red-600':
@@ -22,11 +79,14 @@
           }"
         >
           {{ content.name }}
-        </p>
+        </span>
       </button>
     </div>
-    <!-- 左方filter list -->
-    <div class="fixed left-0 top-1/4 z-10">
+    <!-- 右方filter list -->
+    <div
+      class="fixed right-0 my-20 z-10 duration-500 opacity-90"
+      :class="{ 'translate-x-full': toggleTechStatus }"
+    >
       <StockFilterListVue
         :techList="techList"
         @postFilterCondition="updateFilterCondition"
@@ -40,6 +100,8 @@
         items-start
         w-full
         sm:flex-col sm:items-center
+        mt-8
+        sm:mt-40
       "
     >
       <StockInvestDBTableVue
@@ -78,9 +140,9 @@ import StockModalLink from '../components/Stock/StockModalLink.vue'
 import { ref, getCurrentInstance, onMounted, computed } from 'vue'
 import useGetTechSheet from '@/stores/getTechSheet'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faArrowTrendUp } from '@fortawesome/free-solid-svg-icons'
+import { faArrowTrendUp, faList } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faArrowTrendUp)
+library.add(faArrowTrendUp, faList)
 export default {
   components: {
     StockInvestDBTableVue,
@@ -385,11 +447,19 @@ export default {
         no,
       }
     }
+    /**
+     * @description 切換選單進入or移出
+     */
+    console.log(window.innerWidth)
+    let toggleInvestStatus = ref(window.innerWidth < 1200 ? true : false)
+    let toggleTechStatus = ref(window.innerWidth < 1200 ? true : false)
     return {
       getInvestSheetData, // 取得法人買賣超資料（打api
       updateFilterCondition, // 更新使用者選到的指標function
       troggleModalF, // emit上來的function，目的是用於開啟關閉視窗
       composeSameArray, // 用來測試api資料
+      toggleInvestStatus, // 切換法人買賣超出現與否的參數
+      toggleTechStatus, // 切換技術分析出現與否的參數
       conditionStatus, // client選擇到的技術分析指標
       buy_page_list, // 法人買超資料
       sell_page_list, // 法人賣超資料

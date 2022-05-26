@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-10 relative overflow-x-auto shadow-md sm:rounded-lg">
+  <div class="mx-10 relative overflow-x-auto shadow-md sm:rounded-lg border">
     <div class="p-2 bg-gray-900 h-auto w-auto">
       <p class="text-center text-xl text-gray-50">{{ title }}</p>
     </div>

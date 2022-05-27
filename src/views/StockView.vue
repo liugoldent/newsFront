@@ -42,7 +42,7 @@
         "
         :class="{ 'translate-x-20': toggleTechStatus }"
       >
-        <font-awesome-icon icon="list" class="mx-2" /> <p class="inline">技術分析</p>
+        <font-awesome-icon icon="list" class="mx-2" /> <p class="ml-1 inline">技術分析</p>
       </button>
     </div>
     <!-- 左方選單List -->
@@ -131,7 +131,7 @@
         :linkWeb="linkWeb"
       />
     </div>
-    <div class="fixed sm:left-2 sm:bottom-10 sm:visible md:visible invisible">
+    <div class="fixed left-2 sm:visible md:visible invisible">
       <span
         class="
           absolute

@@ -42,7 +42,7 @@
         "
         :class="{ 'translate-x-20': toggleTechStatus }"
       >
-        <font-awesome-icon icon="list" class="mx-2 mr-3" />技術分析
+        <font-awesome-icon icon="list" class="mx-2" /> <p class="inline">技術分析</p>
       </button>
     </div>
     <!-- 左方選單List -->

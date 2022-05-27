@@ -10,16 +10,17 @@
           py-2
           text-sm
           transition-colors
-          duration-300
           rounded rounded-full
           shadow-xl
           bg-slate-500
           hover:bg-slate-600
           text-slate-100
           shadow-slate-400
+          duration-500
         "
+        :class="{ '-translate-x-28': toggleInvestStatus }"
       >
-        <font-awesome-icon icon="list" class="mr-2" />法人買賣超 - 選單
+        法人買賣超<font-awesome-icon icon="list" class="mx-2" />
       </button>
       <button
         @click="toggleTechStatus = !toggleTechStatus"
@@ -29,16 +30,17 @@
           py-2
           text-sm
           transition-colors
-          duration-300
           rounded rounded-full
           shadow-xl
           bg-slate-500
           hover:bg-slate-600
           text-slate-100
           shadow-slate-400
+          duration-700
         "
+        :class="{ 'translate-x-24': toggleTechStatus }"
       >
-        <font-awesome-icon icon="list" class="mr-2" />技術分析 - 選單
+        <font-awesome-icon icon="list" class="mx-2" />技術分析
       </button>
     </div>
     <!-- 左方選單List -->
@@ -127,6 +129,43 @@
         :linkWeb="linkWeb"
       />
     </div>
+    <div
+      class="
+        fixed
+        sm:left-2 sm:bottom-10 sm:visible
+        invisible
+      "
+    >
+      <span
+        class="
+          absolute
+          inset-0
+          w-full
+          h-full
+          transition
+          duration-300
+          ease-out
+          transform
+          translate-x-1 translate-y-1
+          bg-red-700
+          group-hover:-translate-x-0 group-hover:-translate-y-0
+        "
+      ></span>
+      <span
+        class="
+          absolute
+          inset-0
+          w-full
+          h-full
+          bg-white
+          border-2 border-red-700
+          group-hover:bg-red-700
+        "
+      ></span>
+      <span class="relative text-red-700 group-hover:text-red-100 p-5 text-xl">
+        {{ listName.name }}
+      </span>
+    </div>
   </div>
   <div
     v-if="modalStatus"
@@ -168,8 +207,13 @@ export default {
     let buy_page_list = ref([])
     let sell_page_list = ref([])
     let selectedButton = ref('')
+    let listName = ref('')
     const getInvestSheetData = async function (investType) {
       try {
+        console.log('', 123)
+        listName.value = buttonContent.value.find(
+          (data) => data.key === investType
+        )
         if (investType === 'localForeign_same') {
           selectedButton.value = investType
           composeSameArray()
@@ -468,6 +512,7 @@ export default {
       propsToModal, // 給modal的資料
       linkWeb, // 給modal的連結資料
       buttonContent, // 上方 button的資料
+      listName, // 左方list 的名稱
       selectedButton, // 點選到的button
     }
   },

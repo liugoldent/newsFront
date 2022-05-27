@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-start items-end bg-slate-300 rounded-md p-2">
+  <div class="flex flex-col justify-start items-end bg-slate-300 rounded-md p-2 sm:overflow-y-auto sm:h-96">
     <button
       v-for="data in chi_techList"
       :key="data.name"

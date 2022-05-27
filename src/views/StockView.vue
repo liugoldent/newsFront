@@ -5,7 +5,8 @@
       <button
         @click="toggleInvestStatus = !toggleInvestStatus"
         class="
-          ml-2
+          fixed
+          left-0
           px-6
           py-2
           text-sm
@@ -18,14 +19,15 @@
           shadow-slate-400
           duration-500
         "
-        :class="{ '-translate-x-28': toggleInvestStatus }"
+        :class="{ '-translate-x-24': toggleInvestStatus }"
       >
         法人買賣超<font-awesome-icon icon="list" class="mx-2" />
       </button>
       <button
         @click="toggleTechStatus = !toggleTechStatus"
         class="
-          mr-2
+          fixed
+          right-0
           px-6
           py-2
           text-sm
@@ -38,7 +40,7 @@
           shadow-slate-400
           duration-700
         "
-        :class="{ 'translate-x-24': toggleTechStatus }"
+        :class="{ 'translate-x-20': toggleTechStatus }"
       >
         <font-awesome-icon icon="list" class="mx-2" />技術分析
       </button>
@@ -129,13 +131,7 @@
         :linkWeb="linkWeb"
       />
     </div>
-    <div
-      class="
-        fixed
-        sm:left-2 sm:bottom-10 sm:visible
-        invisible
-      "
-    >
+    <div class="fixed sm:left-2 sm:bottom-10 sm:visible invisible">
       <span
         class="
           absolute

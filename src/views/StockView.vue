@@ -40,10 +40,10 @@
           shadow-slate-400
           duration-700
         "
-        :class="{ 'translate-x-20': toggleTechStatus }"
+        :class="{ 'translate-x-24': toggleTechStatus }"
       >
         <font-awesome-icon icon="list" class="mx-2" />
-        <p class="inline">技術與分析</p>
+        技術與分析
       </button>
     </div>
     <!-- 左方選單List -->

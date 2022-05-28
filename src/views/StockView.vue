@@ -43,7 +43,7 @@
         :class="{ 'translate-x-24': toggleTechStatus }"
       >
         <font-awesome-icon icon="list" class="mx-2" />
-        技術分析&ensp;
+        技術分析&emsp;
       </button>
     </div>
     <!-- 左方選單List -->

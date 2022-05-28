@@ -124,6 +124,24 @@
         class="sm:mt-2"
       />
     </div>
+    <button
+      @click="scrollToTop"
+      class="
+        animate-bounce
+        fixed
+        bottom-10
+        left-10
+        border
+        border-double
+        rounded-full
+        p-3
+        border-rose-400 shadow-rose-300/30
+        shadow-xl
+
+      "
+    >
+      <font-awesome-icon icon="angles-up" class="fa-2xl text-rose-400" />
+    </button>
     <!-- 跳窗 -->
     <div class="fixed top-50 z-30" v-if="modalStatus">
       <StockModalLink
@@ -176,9 +194,13 @@ import StockModalLink from '../components/Stock/StockModalLink.vue'
 import { ref, getCurrentInstance, onMounted, computed } from 'vue'
 import useGetTechSheet from '@/stores/getTechSheet'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faArrowTrendUp, faList } from '@fortawesome/free-solid-svg-icons'
+import {
+  faArrowTrendUp,
+  faList,
+  faAnglesUp,
+} from '@fortawesome/free-solid-svg-icons'
 
-library.add(faArrowTrendUp, faList)
+library.add(faArrowTrendUp, faList, faAnglesUp)
 export default {
   components: {
     StockInvestDBTableVue,
@@ -494,11 +516,21 @@ export default {
     console.log(window.innerWidth)
     let toggleInvestStatus = ref(window.innerWidth < 1200 ? true : false)
     let toggleTechStatus = ref(window.innerWidth < 1200 ? true : false)
+    /**
+     * @description 點擊向上按鈕
+     */
+    const scrollToTop = function () {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      })
+    }
     return {
       getInvestSheetData, // 取得法人買賣超資料（打api
       updateFilterCondition, // 更新使用者選到的指標function
       troggleModalF, // emit上來的function，目的是用於開啟關閉視窗
       composeSameArray, // 用來測試api資料
+      scrollToTop, // 點擊向上按鈕
       toggleInvestStatus, // 切換法人買賣超出現與否的參數
       toggleTechStatus, // 切換技術分析出現與否的參數
       conditionStatus, // client選擇到的技術分析指標

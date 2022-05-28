@@ -140,7 +140,7 @@
     <ScrollTopButton />
   </div>
   <BlackMirrorVue :mirrorStatus="modalStatus" />
-  <loading-view :loadingStatus="loadingStatus"/>
+  <loading-view :loadingStatus="true"/>
 </template>
 <script>
 import StockInvestDBTableVue from '../components/Stock/StockInvestDBTable.vue'

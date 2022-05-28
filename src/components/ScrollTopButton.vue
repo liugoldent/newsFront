@@ -4,6 +4,8 @@
     class="
       animate-bounce
       fixed
+      sm:bottom-5
+      sm:left-5
       bottom-10
       left-10
       border border-double

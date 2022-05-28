@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 export default {
   name: 'StockFilterList',
   // 子組件通過 props 來接收

@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col justify-start items-center">
-    <!-- 上方button -->
+    <!-- 左右方button -->
     <div class="flex flex-row justify-between w-full fixed z-10 m-10">
       <button
         @click="toggleInvestStatus = !toggleInvestStatus"
@@ -124,24 +124,6 @@
         class="sm:mt-2"
       />
     </div>
-    <button
-      @click="scrollToTop"
-      class="
-        animate-bounce
-        fixed
-        bottom-10
-        left-10
-        border
-        border-double
-        rounded-full
-        p-3
-        border-rose-400 shadow-rose-300/30
-        shadow-xl
-
-      "
-    >
-      <font-awesome-icon icon="angles-up" class="fa-2xl text-rose-400" />
-    </button>
     <!-- 跳窗 -->
     <div class="fixed top-50 z-30" v-if="modalStatus">
       <StockModalLink
@@ -150,48 +132,24 @@
         :linkWeb="linkWeb"
       />
     </div>
+    <!-- 方塊顯示點選到的法人長方形 -->
     <div class="fixed left-2 sm:visible md:visible invisible">
-      <span
-        class="
-          absolute
-          inset-0
-          w-full
-          h-full
-          transition
-          duration-300
-          ease-out
-          transform
-          translate-x-1 translate-y-1
-          bg-red-700
-          group-hover:-translate-x-0 group-hover:-translate-y-0
-        "
-      ></span>
-      <span
-        class="
-          absolute
-          inset-0
-          w-full
-          h-full
-          bg-white
-          border-2 border-red-700
-          group-hover:bg-red-700
-        "
-      ></span>
-      <span class="relative text-red-700 group-hover:text-red-100 p-5 text-xl">
-        {{ listName.name }}
-      </span>
+      <RectangleNameVue :titleName="listName" />
     </div>
+    <!-- 捲軸到頂端 -->
+    <ScrollTopButton />
   </div>
-  <div
-    v-if="modalStatus"
-    class="fixed h-full w-full bg-gray-900/70 bg-cover z-20"
-  ></div>
+  <BlackMirrorVue :mirrorStatus="modalStatus" />
+  <loading-view :loadingStatus="loadingStatus"/>
 </template>
 <script>
 import StockInvestDBTableVue from '../components/Stock/StockInvestDBTable.vue'
 import StockFilterListVue from '../components/Stock/StockFilterList.vue'
 import StockModalLink from '../components/Stock/StockModalLink.vue'
-import { ref, getCurrentInstance, onMounted, computed } from 'vue'
+import RectangleNameVue from '../components/RectangleName.vue'
+import ScrollTopButton from '../components/ScrollTopButton.vue'
+import BlackMirrorVue from '../components/BlackMirror.vue'
+import { ref, getCurrentInstance, onMounted } from 'vue'
 import useGetTechSheet from '@/stores/getTechSheet'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
@@ -206,6 +164,9 @@ export default {
     StockInvestDBTableVue,
     StockFilterListVue,
     StockModalLink,
+    RectangleNameVue,
+    ScrollTopButton,
+    BlackMirrorVue,
   },
   setup() {
     // 設定 proxy
@@ -214,9 +175,12 @@ export default {
       `${proxy.envURL}/stockApi/sheetData/invest`
     )
     // 讓 pinia 先去跑google sheets 來拿到資料
+    // 使用loading參數來讓畫面變暗
+    let loadingStatus = ref(true)
     const useGetTech = useGetTechSheet()
     onMounted(async () => {
       await useGetTech.getSheetData()
+      loadingStatus.value = false
     })
 
     /**
@@ -229,7 +193,6 @@ export default {
     let listName = ref('')
     const getInvestSheetData = async function (investType) {
       try {
-        console.log('', 123)
         listName.value = buttonContent.value.find(
           (data) => data.key === investType
         )
@@ -255,7 +218,6 @@ export default {
         console.error(error)
       }
     }
-
     /**
      * @description 組成買進 or 賣出的陣列
      * @param {*} no 名次
@@ -516,21 +478,11 @@ export default {
     console.log(window.innerWidth)
     let toggleInvestStatus = ref(window.innerWidth < 1200 ? true : false)
     let toggleTechStatus = ref(window.innerWidth < 1200 ? true : false)
-    /**
-     * @description 點擊向上按鈕
-     */
-    const scrollToTop = function () {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      })
-    }
     return {
       getInvestSheetData, // 取得法人買賣超資料（打api
       updateFilterCondition, // 更新使用者選到的指標function
       troggleModalF, // emit上來的function，目的是用於開啟關閉視窗
       composeSameArray, // 用來測試api資料
-      scrollToTop, // 點擊向上按鈕
       toggleInvestStatus, // 切換法人買賣超出現與否的參數
       toggleTechStatus, // 切換技術分析出現與否的參數
       conditionStatus, // client選擇到的技術分析指標
@@ -543,6 +495,7 @@ export default {
       buttonContent, // 上方 button的資料
       listName, // 左方list 的名稱
       selectedButton, // 點選到的button
+      loadingStatus, //點進畫面的初始loading
     }
   },
 }

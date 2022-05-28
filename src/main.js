@@ -6,9 +6,12 @@ import router from './router'
 import './index.css'
 import * as sharedModule_str from './public/stringConvert'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import Loading from './components/Loading.vue'
 
 console.log(process.env.NODE_ENV)
-const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
+const app = createApp(App)
+        .component('font-awesome-icon', FontAwesomeIcon)
+        .component('loading-view', Loading)
 
 // 打 api 的設定
 app.config.globalProperties.sharedModule_str = sharedModule_str

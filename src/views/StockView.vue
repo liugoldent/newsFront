@@ -134,7 +134,7 @@
     </div>
     <!-- 方塊顯示點選到的法人長方形 -->
     <div class="fixed left-2 sm:visible md:visible invisible">
-      <RectangleNameVue :titleName="listName" />
+      <RectangleNameVue :titleName="listName.name" />
     </div>
     <!-- 捲軸到頂端 -->
     <ScrollTopButton />
@@ -475,7 +475,6 @@ export default {
     /**
      * @description 切換選單進入or移出
      */
-    console.log(window.innerWidth)
     let toggleInvestStatus = ref(window.innerWidth < 1200 ? true : false)
     let toggleTechStatus = ref(window.innerWidth < 1200 ? true : false)
     return {

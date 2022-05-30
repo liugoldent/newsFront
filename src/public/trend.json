@@ -1,0 +1,50 @@
+{
+  "buy123List": {
+    "title": "生活市集",
+    "normalurl": "https://www.buy123.com.tw/",
+    "searchFUrl": "https://www.buy123.com.tw/search?q=",
+    "searchBUrl": "#ref=d_main_searchBar_userInput"
+  },
+  "bookStoreList": {
+    "title": "博客來",
+    "normalurl": "https://www.books.com.tw/",
+    "searchFUrl": "https://search.books.com.tw/search/query/key/",
+    "searchBUrl": "/cat/all"
+  },
+  "pconeList": {
+    "title": "松果購物",
+    "normalurl": "https://www.pcone.com.tw/",
+    "searchFUrl": "https://www.pcone.com.tw/search?q=",
+    "searchBUrl": "#ref=d_main_searchBar_userInput"
+  },
+  "sevenlList": {
+    "title": "7-ELEVEN線上購物中心",
+    "normalurl": "https://shop.7-11.com.tw/shop/rui001.faces",
+    "searchFUrl": "https://shop.7-11.com.tw/shop/rui009.faces?ladosidg=1_8&range=&qs=",
+    "searchBUrl": ""
+  },
+  "rakutenlList": {
+    "title": "樂天市場",
+    "normalurl": "https://www.rakuten.com.tw/",
+    "searchFUrl": "https://www.rakuten.com.tw/search/",
+    "searchBUrl": ""
+  },
+  "rutenList": {
+    "title": "露天拍賣",
+    "normalurl": "https://www.ruten.com.tw/",
+    "searchFUrl": "https://www.ruten.com.tw/find/?q=",
+    "searchBUrl": ""
+  },
+  "carrefourList": {
+    "title": "家樂福線上購物",
+    "normalurl": "https://online.carrefour.com.tw/tw/homepage/",
+    "searchFUrl": "https://online.carrefour.com.tw/zh/search/?q=",
+    "searchBUrl": ""
+  },
+  "momoList": {
+    "title": "momo 購物網",
+    "normalurl": "https://www.momoshop.com.tw/main/Main.jsp",
+    "searchFUrl": "https://www.momoshop.com.tw/search/searchShop.jsp?keyword=",
+    "searchBUrl": "&searchType=1&cateLevel=0&cateCode=&curPage=1&_isFuzzy=0&showType=chessboardType"
+  }
+}

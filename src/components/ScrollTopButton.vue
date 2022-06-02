@@ -19,6 +19,12 @@
   </button>
 </template>
 <script>
+import { library } from '@fortawesome/fontawesome-svg-core'
+import {
+  faAnglesUp
+} from '@fortawesome/free-solid-svg-icons'
+
+library.add(faAnglesUp)
 export default {
   setup() {
      /**

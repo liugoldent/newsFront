@@ -46,5 +46,17 @@
     "normalurl": "https://www.momoshop.com.tw/main/Main.jsp",
     "searchFUrl": "https://www.momoshop.com.tw/search/searchShop.jsp?keyword=",
     "searchBUrl": "&searchType=1&cateLevel=0&cateCode=&curPage=1&_isFuzzy=0&showType=chessboardType"
+  },
+  "etmailList": {
+    "title": "東森購物",
+    "normalurl": "https://www.etmall.com.tw/",
+    "searchFUrl": "https://www.etmall.com.tw/Search?keyword=",
+    "searchBUrl": ""
+  },
+  "fridaylList": {
+    "title": "friDay購物",
+    "normalurl": "https://shopping.friday.tw/",
+    "searchFUrl": "https://shopping.friday.tw/ec2/search?keyword=",
+    "searchBUrl": ""
   }
 }

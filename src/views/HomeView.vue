@@ -9,6 +9,7 @@ export default {
   setup() {
     let stockInfo = ref({})
     let trendInfo = ref({})
+    let financeInfo = ref({})
     stockInfo.value = {
       title: '台灣股市',
       content:
@@ -18,9 +19,14 @@ export default {
       title: '熱搜關鍵字',
       content: '集合各線上購物網站的熱搜關鍵字，讓您了解現在趨勢為何',
     }
+    financeInfo.value = {
+      title: '財經新聞',
+      content: '集結yahoo與鉅亨網的所見所聞，讓你一手掌握財經事',
+    }
     return {
       stockInfo,
       trendInfo,
+      financeInfo,
     }
   },
 }
@@ -34,6 +40,7 @@ export default {
     <div class="flex flex-row flex-wrap justify-center items-center m-8 h-auto">
       <router-link to="/stock"><HomeCardVue :info="stockInfo" /></router-link>
       <router-link to="/trend"><HomeCardVue :info="trendInfo" /></router-link>
+      <router-link to="/financeNews"><HomeCardVue :info="financeInfo" /></router-link>
     </div>
   </div>
 </template>

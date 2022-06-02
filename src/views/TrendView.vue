@@ -27,8 +27,8 @@ export default {
       rutenList: {},
       carrefourList: {},
       momoList: {},
-      // etmailList: {},
-      // fridaylList: {},
+      etmailList: {},
+      fridaylList: {},
     })
     onMounted(async () => {
       await getWordsData()
@@ -58,6 +58,7 @@ export default {
         )
         webList[thisTimeWeb].classColor = classFunc(i)
       }
+      // webList = webList.filter((data) => data.product.productName.length > 0)
       console.log(webList)
     }
     /**
@@ -101,18 +102,3 @@ export default {
   },
 }
 </script>
-
-
-<!--
-  "etmailList": {
-    "title": "東森購物",
-    "normalurl": "https://www.etmall.com.tw/",
-    "searchFUrl": "https://www.etmall.com.tw/Search?keyword=",
-    "searchBUrl": ""
-  },
-  "fridaylList": {
-    "title": "friDay購物",
-    "normalurl": "https://shopping.friday.tw/",
-    "searchFUrl": "https://shopping.friday.tw/ec2/search?keyword=",
-    "searchBUrl": ""
-  }, -->

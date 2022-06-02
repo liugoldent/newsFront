@@ -11,7 +11,7 @@
           py-2
           text-sm
           transition-colors
-          rounded rounded-full
+          rounded
           shadow-xl
           bg-slate-500
           hover:bg-slate-600
@@ -155,10 +155,9 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faArrowTrendUp,
   faList,
-  faAnglesUp,
 } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faArrowTrendUp, faList, faAnglesUp)
+library.add(faArrowTrendUp, faList)
 export default {
   components: {
     StockInvestDBTableVue,

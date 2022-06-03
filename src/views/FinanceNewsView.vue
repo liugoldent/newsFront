@@ -1,13 +1,12 @@
 <template>
   <div class="flex flex-col justify-start items-center w-full">
-    <div>
+    <div class="flex flex-col fixed right-0">
       <button
         @click="selectNewsName(eachKey)"
         v-for="eachKey in Object.keys(webType)"
         :key="eachKey"
         class="m-2"
       >
-
         {{ webType[eachKey].name }}
       </button>
     </div>
@@ -21,7 +20,7 @@
   </div>
 </template>
 <script>
-import { getCurrentInstance, reactive, ref } from 'vue'
+import { getCurrentInstance, onMounted, reactive, ref } from 'vue'
 import StockNewsListVue from '../components/Stock/StockNewsList.vue'
 import ScrollTopButton from '../components/ScrollTopButton.vue'
 import RectangleNameVue from '../components/RectangleName.vue'
@@ -63,6 +62,10 @@ export default {
         source: '鉅亨網',
       },
     }
+    onMounted(async () => {
+      await devideFinanceData()
+      selectNewsName('yahooInternational')
+    })
     /**
      * @description 取回sheets內的資料
      */
@@ -100,7 +103,7 @@ export default {
         result.push({
           title: rawSheetData.title[i],
           href: rawSheetData.href[i],
-          subtitle: rawSheetData.subtitle[i] || '',
+          subtitle: separateSubTitle(rawSheetData.subtitle[i]),
           time: timeStr,
           from: fromStr,
           webName: webType[type].name,
@@ -108,6 +111,13 @@ export default {
         })
       }
       return result
+    }
+    const separateSubTitle = function (subtitle) {
+      if (subtitle !== undefined) {
+        return subtitle.split('。')
+      } else {
+        return []
+      }
     }
     /**
      * @description 點選按鈕改變news list 內容
@@ -118,7 +128,6 @@ export default {
       name.value = webType[inputName].name
       newsListInChild.value = financeNewsSheetData[inputName]
     }
-    devideFinanceData()
     return {
       financeNewsSheetData, // 爬出來的財經資料
       selectNewsName, //選到哪個新聞的名稱

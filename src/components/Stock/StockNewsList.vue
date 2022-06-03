@@ -19,25 +19,26 @@
           >
             {{ listIndex[index] }}
           </p>
-
-          <p
-            class="text-xl inline mx-4 relative bottom-2"
-            v-if="eachData.time.length > 0"
-          >
-            {{ eachData.time }}
-          </p>
-          <p
-            class="text-xl inline mx-2 relative bottom-2"
-            v-if="eachData.from.length > 0"
-          >
-            {{ eachData.from }}
-          </p>
+          <div class="sm:flex sm:flex-col sm:items-start sm:justify-center">
+            <p
+              class="text-xl inline mx-4 relative bottom-2"
+              v-if="eachData.time.length > 0"
+            >
+              {{ eachData.time }}
+            </p>
+            <p
+              class="text-xl inline mx-2 relative bottom-2 sm:mx-4"
+              v-if="eachData.from.length > 0"
+            >
+              {{ eachData.from }}
+            </p>
+          </div>
         </div>
         <h1 class="text-4xl inline mb-2">
           <a :href="eachData.href">{{ eachData.title }}</a>
         </h1>
-        <p class="text-xl inline" v-if="eachData.subtitle.length > 0">
-          {{ eachData.subtitle }}
+        <p class="text-xl inline my-1" v-for="subtitleText,index in eachData.subtitle" :key="index">
+          {{ subtitleText }}
         </p>
       </div>
     </div>
@@ -49,7 +50,6 @@ export default {
   props: ['newsData'],
   setup(props) {
     const onViewData = computed(() => {
-      console.log(props.newsData)
       return props.newsData
     })
     const listIndex = computed(() => {

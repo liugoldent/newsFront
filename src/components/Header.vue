@@ -9,7 +9,7 @@
         </li>
         <li>
           <router-link to="/stock"
-            ><a class="mr-4 hover:underline md:mr-6">Stock</a></router-link
+            ><a class="mr-4 hover:underline md:mr-6">一日法人買賣超</a></router-link
           >
         </li>
         <li>
@@ -17,11 +17,11 @@
             ><a class="mr-4 hover:underline md:mr-6">財經新聞</a></router-link
           >
         </li>
-        <li>
+        <!-- <li>
           <router-link to="/trend"
             ><a class="mr-4 hover:underline md:mr-6">熱搜關鍵字</a></router-link
           >
-        </li>
+        </li> -->
       </ul>
     </div>
   </header>

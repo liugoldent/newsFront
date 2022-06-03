@@ -11,7 +11,7 @@ export default {
     let trendInfo = ref({})
     let financeInfo = ref({})
     stockInfo.value = {
-      title: '台灣股市',
+      title: '一日法人買賣超',
       content:
         '相較於以往的法人買賣超，在這裡我們可以透過買賣超與技術分析來篩選出你想看的股票',
     }
@@ -39,8 +39,10 @@ export default {
     </div>
     <div class="flex flex-row flex-wrap justify-center items-center m-8 h-auto">
       <router-link to="/stock"><HomeCardVue :info="stockInfo" /></router-link>
-      <router-link to="/trend"><HomeCardVue :info="trendInfo" /></router-link>
-      <router-link to="/financeNews"><HomeCardVue :info="financeInfo" /></router-link>
+      <router-link to="/financeNews"
+        ><HomeCardVue :info="financeInfo"
+      /></router-link>
+      <!-- <router-link to="/trend"><HomeCardVue :info="trendInfo" /></router-link> -->
     </div>
   </div>
 </template>

@@ -134,7 +134,7 @@
     </div>
     <!-- 方塊顯示點選到的法人長方形 -->
     <div class="fixed left-2 sm:visible md:visible invisible">
-      <RectangleNameVue :titleName="listName.name" />
+      <RectangleNameVue :titleName="titleName" :titleHref="titleHref" />
     </div>
     <!-- 捲軸到頂端 -->
     <ScrollTopButton />
@@ -180,18 +180,21 @@ export default {
     })
 
     /**
-     * @description 設定api 與 template 連結
+     * @description 設定api 與 template 連結 => 點選法人買賣種類，會對應到左上角的title
      * @param {*} investType
      */
     let buy_page_list = ref([])
     let sell_page_list = ref([])
     let selectedButton = ref('')
-    let listName = ref('')
+    let titleName = ref('')
+    let titleHref = ref('')
     const getInvestSheetData = async function (investType) {
       try {
-        listName.value = buttonContent.value.find(
+        let selectTitle = buttonContent.value.find(
           (data) => data.key === investType
         )
+        titleName.value = selectTitle.name
+        titleHref.value = selectTitle.link
         if (investType === 'localForeign_same') {
           selectedButton.value = investType
           composeSameArray()
@@ -397,22 +400,27 @@ export default {
       {
         name: '上市投信買賣超',
         key: 'local_listed',
+        link: 'https://fubon-ebrokerdj.fbs.com.tw/Z/ZG/ZGK_DD.djhtm',
       },
       {
         name: '上櫃投信買賣超',
         key: 'local_otc',
+        link: 'https://fubon-ebrokerdj.fbs.com.tw/z/zg/zgk.djhtm?A=DD&B=1&C=1',
       },
       {
         name: '上市外資買賣超',
         key: 'foreign_listed',
+        link: 'https://fubon-ebrokerdj.fbs.com.tw/Z/ZG/ZGK_D.djhtm',
       },
       {
         name: '上櫃外資買賣超',
         key: 'foreign_otc',
+        link: 'https://fubon-ebrokerdj.fbs.com.tw/z/zg/zgk.djhtm?A=D&B=1&C=1',
       },
       {
         name: '外資投信同步買賣超',
         key: 'localForeign_same',
+        link: '',
       },
     ]
     /**
@@ -488,9 +496,10 @@ export default {
       propsToModal, // 給modal的資料
       linkWeb, // 給modal的連結資料
       buttonContent, // 上方 button的資料
-      listName, // 左方list 的名稱
-      selectedButton, // 點選到的button
+      titleName, // 點完之後要顯示在畫面上的名稱
+      titleHref, // 點完之後要顯示在畫面左上角的連結
       loadingStatus, //點進畫面的初始loading
+      selectedButton, // 選到的法人買賣
     }
   },
 }

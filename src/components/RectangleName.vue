@@ -22,13 +22,13 @@
     class="relative group-hover:text-red-100 p-5 text-xl"
     :class="textColor"
   >
-    {{ titleName }}
+    <a :href="titleHref">{{ titleName }}</a>
   </span>
 </template>
 <script>
 import { inject } from 'vue'
 export default {
-  props: ['titleName'],
+  props: ['titleName', 'titleHref'],
   setup() {
     const {
       rectangleTextColor: textColor,

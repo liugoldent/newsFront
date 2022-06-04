@@ -51,7 +51,7 @@
     <StockNewsListVue :newsData="newsListInChild" />
     <!-- 顯示新聞的名稱 -->
     <div class="fixed left-2 sm:visible md:visible invisible">
-      <RectangleNameVue :titleName="name" />
+      <RectangleNameVue :titleName="titleName" :titleHref="titleHref"/>
     </div>
     <!-- 捲軸到頂端 -->
     <ScrollTopButton />
@@ -94,18 +94,22 @@ export default {
       yahooInternational: {
         name: 'yahoo 國際財經',
         source: 'yahoo',
+        link: 'https://tw.stock.yahoo.com/intl-markets'
       },
       yahooTwStock: {
         name: 'yahoo 台股盤勢',
         source: 'yahoo',
+        link: 'https://tw.stock.yahoo.com/tw-market'
       },
       yahooHot: {
         name: 'yahoo 熱門文章',
         source: 'yahoo',
+        link: 'https://tw.stock.yahoo.com/news/'
       },
       anueNews: {
         name: '鉅亨 - 最新新聞',
         source: '鉅亨網',
+        link: 'https://news.cnyes.com/news/cat/all'
       },
     }
     let loadingStatus = ref(true)
@@ -171,12 +175,14 @@ export default {
     /**
      * @description 點選按鈕改變news list 內容
      */
-    let name = ref('')
+    let titleName = ref('')
+    let titleHref = ref('')
     let thisTimeSelectKey = ref('')
     let newsListInChild = ref([])
     const selectNewsName = function (inputName) {
       thisTimeSelectKey.value = inputName
-      name.value = webType[inputName].name
+      titleName.value = webType[inputName].name
+      titleHref.value = webType[inputName].link
       newsListInChild.value = financeNewsSheetData[inputName]
     }
     /**
@@ -192,7 +198,8 @@ export default {
     return {
       financeNewsSheetData, // 爬出來的財經資料
       selectNewsName, //選到哪個新聞的名稱
-      name, // 點完之後要顯示在畫面上的資料
+      titleName, // 點完之後要顯示在畫面上的名稱
+      titleHref, // 點完之後要顯示在畫面左上角的連結
       webType, // 所有的新聞網站
       newsListInChild, // 要送給子component的資料
       thisTimeSelectKey, // 這次點選到的網站

@@ -16,6 +16,7 @@
               text-right
               underline underline-offset-4
             "
+            :class="textColor700Array[index]"
           >
             {{ listIndex[index] }}
           </p>
@@ -23,12 +24,14 @@
             <p
               class="text-xl inline mx-4 relative bottom-2"
               v-if="eachData.time.length > 0"
+              :class="textColor400Array[index]"
             >
               {{ eachData.time }}
             </p>
             <p
               class="text-xl inline mx-2 relative bottom-2 sm:mx-4"
               v-if="eachData.from.length > 0"
+              :class="textColor400Array[index]"
             >
               {{ eachData.from }}
             </p>
@@ -37,7 +40,11 @@
         <h1 class="text-4xl inline mb-2">
           <a :href="eachData.href">{{ eachData.title }}</a>
         </h1>
-        <p class="text-xl inline my-1" v-for="subtitleText,index in eachData.subtitle" :key="index">
+        <p
+          class="text-xl inline my-1"
+          v-for="(subtitleText, index) in eachData.subtitle"
+          :key="index"
+        >
           {{ subtitleText }}
         </p>
       </div>
@@ -46,9 +53,16 @@
 </template>
 <script>
 import { computed } from 'vue'
+import { series700, series400 } from '../../public/color'
 export default {
   props: ['newsData'],
   setup(props) {
+    let textColor700Array = series700.textColor
+    let textColor400Array = series400.textColor
+    for (let i = 0, len = 2; i < len; i++) {
+      textColor700Array = textColor700Array.concat(textColor700Array)
+      textColor400Array = textColor400Array.concat(textColor400Array)
+    }
     const onViewData = computed(() => {
       return props.newsData
     })
@@ -64,8 +78,10 @@ export default {
       return listResult
     })
     return {
-      onViewData,
-      listIndex,
+      onViewData, // 在畫面上的資料
+      listIndex, // 列表index
+      textColor400Array, // 顏色400陣列
+      textColor700Array, // 顏色400陣列
     }
   },
 }

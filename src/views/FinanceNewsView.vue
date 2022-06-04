@@ -51,7 +51,7 @@
     <StockNewsListVue :newsData="newsListInChild" />
     <!-- 顯示新聞的名稱 -->
     <div class="fixed left-2 sm:visible md:visible invisible">
-      <RectangleNameVue :titleName="name" color="blue-700"/>
+      <RectangleNameVue :titleName="name" />
     </div>
     <!-- 捲軸到頂端 -->
     <ScrollTopButton />
@@ -59,7 +59,7 @@
   <loading-view :loadingStatus="loadingStatus" />
 </template>
 <script>
-import { getCurrentInstance, onMounted, reactive, ref } from 'vue'
+import { getCurrentInstance, onMounted, reactive, ref, inject } from 'vue'
 import StockNewsListVue from '../components/Stock/StockNewsList.vue'
 import ScrollTopButton from '../components/ScrollTopButton.vue'
 import RectangleNameVue from '../components/RectangleName.vue'
@@ -184,6 +184,11 @@ export default {
      * @param {} param0
      */
     let toggleNewsWeb = ref(window.innerWidth < 1200 ? true : false)
+    /**
+     * @description 要給子component的顏色
+     */
+    const rectangleColor = inject('rectangleColor')
+
     return {
       financeNewsSheetData, // 爬出來的財經資料
       selectNewsName, //選到哪個新聞的名稱
@@ -193,6 +198,7 @@ export default {
       thisTimeSelectKey, // 這次點選到的網站
       toggleNewsWeb, // 切換開啟關閉的參數
       loadingStatus, // loading 視窗
+      rectangleColor, // 給左上角方形title的顏色
     }
   },
 }

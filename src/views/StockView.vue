@@ -140,7 +140,7 @@
     <ScrollTopButton />
   </div>
   <BlackMirrorVue :mirrorStatus="modalStatus" />
-  <loading-view :loadingStatus="loadingStatus"/>
+  <loading-view :loadingStatus="loadingStatus" />
 </template>
 <script>
 import StockInvestDBTableVue from '../components/Stock/StockInvestDBTable.vue'
@@ -152,10 +152,7 @@ import BlackMirrorVue from '../components/BlackMirror.vue'
 import { ref, getCurrentInstance, onMounted } from 'vue'
 import useGetTechSheet from '@/stores/getTechSheet'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import {
-  faArrowTrendUp,
-  faList,
-} from '@fortawesome/free-solid-svg-icons'
+import { faArrowTrendUp, faList } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faArrowTrendUp, faList)
 export default {

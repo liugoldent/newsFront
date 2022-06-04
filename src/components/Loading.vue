@@ -14,7 +14,7 @@
   >
     <div class="flex flex-row mb-4">
       <div
-        class="z-20 m-6 w-8 h-8 rounded-lg opacity-100 m-2 animate-spin"
+        class="z-20 m-6 w-8 h-8 rounded-lg opacity-100 animate-spin"
         v-for="(color, index) in bgColor"
         :class="[color, `delay${(index + 1) * 100}`]"
         :key="index"

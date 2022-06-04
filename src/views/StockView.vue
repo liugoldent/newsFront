@@ -32,13 +32,13 @@
           py-2
           text-sm
           transition-colors
-          rounded rounded-full
+          rounded
           shadow-xl
           bg-slate-500
           hover:bg-slate-600
           text-slate-100
           shadow-slate-400
-          duration-700
+          duration-500
         "
         :class="{ 'translate-x-24': toggleTechStatus }"
       >

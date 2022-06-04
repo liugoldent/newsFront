@@ -1,29 +1,75 @@
 <template>
   <div class="flex flex-col justify-start items-center w-full">
-    <div class="flex flex-col fixed right-0">
-      <button
-        @click="selectNewsName(eachKey)"
-        v-for="eachKey in Object.keys(webType)"
-        :key="eachKey"
-        class="m-2"
-      >
-        {{ webType[eachKey].name }}
-      </button>
+    <div
+      class="
+        flex flex-row
+        justify-end
+        items-center
+        fixed
+        right-0
+        m-4
+        bg-slate-300
+        z-10
+        rounded
+        opacity-90
+        w-52
+        duration-500
+      "
+      :class="{ 'translate-x-44': toggleNewsWeb }"
+    >
+      <font-awesome-icon
+        icon="circle-arrow-left"
+        class="text-2xl mr-1 cursor-pointer"
+        :class="{ 'rotate-180 ': !toggleNewsWeb }"
+        @click="toggleNewsWeb = !toggleNewsWeb"
+        v-if="!loadingStatus"
+      />
+      <div class="flex flex-col items-end">
+        <button
+          @click="selectNewsName(eachKey)"
+          v-for="eachKey in Object.keys(webType)"
+          :key="eachKey"
+          class="m-2"
+        >
+          <font-awesome-icon
+            v-if="eachKey === thisTimeSelectKey"
+            icon="newspaper"
+            class="mx-3"
+          />
+          <p
+            class="inline"
+            :class="{
+              'underline underline-offset-4': eachKey === thisTimeSelectKey,
+            }"
+          >
+            {{ webType[eachKey].name }}
+          </p>
+        </button>
+      </div>
     </div>
+
     <StockNewsListVue :newsData="newsListInChild" />
     <!-- 顯示新聞的名稱 -->
     <div class="fixed left-2 sm:visible md:visible invisible">
-      <RectangleNameVue :titleName="name" />
+      <RectangleNameVue :titleName="name" color="blue-700"/>
     </div>
     <!-- 捲軸到頂端 -->
     <ScrollTopButton />
   </div>
+  <loading-view :loadingStatus="loadingStatus" />
 </template>
 <script>
 import { getCurrentInstance, onMounted, reactive, ref } from 'vue'
 import StockNewsListVue from '../components/Stock/StockNewsList.vue'
 import ScrollTopButton from '../components/ScrollTopButton.vue'
 import RectangleNameVue from '../components/RectangleName.vue'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import {
+  faNewspaper,
+  faCircleArrowLeft,
+} from '@fortawesome/free-solid-svg-icons'
+library.add(faNewspaper, faCircleArrowLeft)
+
 export default {
   components: {
     StockNewsListVue,
@@ -58,13 +104,16 @@ export default {
         source: 'yahoo',
       },
       anueNews: {
-        name: '鉅亨網 - 最新新聞',
+        name: '鉅亨 - 最新新聞',
         source: '鉅亨網',
       },
     }
+    let loadingStatus = ref(true)
     onMounted(async () => {
+      loadingStatus.value = true
       await devideFinanceData()
       selectNewsName('yahooInternational')
+      loadingStatus.value = false
     })
     /**
      * @description 取回sheets內的資料
@@ -123,17 +172,27 @@ export default {
      * @description 點選按鈕改變news list 內容
      */
     let name = ref('')
+    let thisTimeSelectKey = ref('')
     let newsListInChild = ref([])
     const selectNewsName = function (inputName) {
+      thisTimeSelectKey.value = inputName
       name.value = webType[inputName].name
       newsListInChild.value = financeNewsSheetData[inputName]
     }
+    /**
+     * @description 開啟關閉新聞網
+     * @param {} param0
+     */
+    let toggleNewsWeb = ref(window.innerWidth < 1200 ? true : false)
     return {
       financeNewsSheetData, // 爬出來的財經資料
       selectNewsName, //選到哪個新聞的名稱
       name, // 點完之後要顯示在畫面上的資料
       webType, // 所有的新聞網站
       newsListInChild, // 要送給子component的資料
+      thisTimeSelectKey, // 這次點選到的網站
+      toggleNewsWeb, // 切換開啟關閉的參數
+      loadingStatus, // loading 視窗
     }
   },
 }

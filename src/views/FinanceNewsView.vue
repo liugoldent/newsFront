@@ -109,7 +109,7 @@ export default {
       anueNews: {
         name: '鉅亨 - 最新新聞',
         source: '鉅亨網',
-        link: 'https://news.cnyes.com/news/cat/all'
+        link: 'https://news.cnyes.com/news/cat/headline'
       },
     }
     let loadingStatus = ref(true)

@@ -39,7 +39,7 @@ export default {
     </div>
     <div class="flex flex-row flex-wrap justify-center items-center m-8 h-auto">
       <router-link to="/stock"><HomeCardVue :info="stockInfo" /></router-link>
-      <router-link to="/financeNews"
+      <router-link to="/financeNews/yahooInternational"
         ><HomeCardVue :info="financeInfo"
       /></router-link>
       <!-- <router-link to="/trend"><HomeCardVue :info="trendInfo" /></router-link> -->

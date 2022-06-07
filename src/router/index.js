@@ -7,7 +7,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
     },
     // {
     //   path: '/trend',
@@ -20,14 +20,32 @@ const router = createRouter({
     {
       path: '/stock',
       name: 'stock',
-      component: () => import('../views/StockView.vue')
+      component: () => import('../views/StockView.vue'),
     },
     {
       path: '/financeNews',
       name: 'financeNews',
-      component: () => import('../views/FinanceNewsView.vue')
-    }
-  ]
+      component: () => import('../views/FinanceNewsView.vue'),
+      children: [
+        {
+          path: 'yahooInternational',
+          component: () => import('../components/Stock/StockNewsList.vue'),
+        },
+        {
+          path: 'yahooTwStock',
+          component: () => import('../components/Stock/StockNewsList.vue'),
+        },
+        {
+          path: 'yahooHot',
+          component: () => import('../components/Stock/StockNewsList.vue'),
+        },
+        {
+          path: 'anueNews',
+          component: () => import('../components/Stock/StockNewsList.vue'),
+        },
+      ],
+    },
+  ],
 })
 
 export default router

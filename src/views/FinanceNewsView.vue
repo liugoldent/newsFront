@@ -36,22 +36,23 @@
             icon="newspaper"
             class="mx-3"
           />
-          <p
-            class="inline"
-            :class="{
-              'underline underline-offset-4': eachKey === thisTimeSelectKey,
-            }"
-          >
-            {{ webType[eachKey].name }}
-          </p>
+          <router-link :to="`/financeNews/${eachKey}`">
+            <p
+              class="inline"
+              :class="{
+                'underline underline-offset-4': eachKey === thisTimeSelectKey,
+              }"
+            >
+              {{ webType[eachKey].name }}
+            </p>
+          </router-link>
         </button>
       </div>
     </div>
-
-    <StockNewsListVue :newsData="newsListInChild" />
+    <router-view :newsData="newsListInChild"></router-view>
     <!-- 顯示新聞的名稱 -->
     <div class="fixed left-2 sm:visible md:visible invisible">
-      <RectangleNameVue :titleName="titleName" :titleHref="titleHref"/>
+      <RectangleNameVue :titleName="titleName" :titleHref="titleHref" />
     </div>
     <!-- 捲軸到頂端 -->
     <ScrollTopButton />
@@ -60,6 +61,7 @@
 </template>
 <script>
 import { getCurrentInstance, onMounted, reactive, ref, inject } from 'vue'
+import { useRouter } from 'vue-router'
 import StockNewsListVue from '../components/Stock/StockNewsList.vue'
 import ScrollTopButton from '../components/ScrollTopButton.vue'
 import RectangleNameVue from '../components/RectangleName.vue'
@@ -78,6 +80,7 @@ export default {
   },
   setup() {
     const { proxy } = getCurrentInstance()
+    const router = useRouter()
     const financeNews = proxy.axios.get(
       `${proxy.envURL}/stockApi/sheetData/financeNews`
     )
@@ -94,22 +97,22 @@ export default {
       yahooInternational: {
         name: 'yahoo 國際財經',
         source: 'yahoo',
-        link: 'https://tw.stock.yahoo.com/intl-markets'
+        link: 'https://tw.stock.yahoo.com/intl-markets',
       },
       yahooTwStock: {
         name: 'yahoo 台股盤勢',
         source: 'yahoo',
-        link: 'https://tw.stock.yahoo.com/tw-market'
+        link: 'https://tw.stock.yahoo.com/tw-market',
       },
       yahooHot: {
         name: 'yahoo 熱門文章',
         source: 'yahoo',
-        link: 'https://tw.stock.yahoo.com/news/'
+        link: 'https://tw.stock.yahoo.com/news/',
       },
       anueNews: {
         name: '鉅亨 - 最新新聞',
         source: '鉅亨網',
-        link: 'https://news.cnyes.com/news/cat/headline'
+        link: 'https://news.cnyes.com/news/cat/headline',
       },
     }
     let loadingStatus = ref(true)
@@ -117,6 +120,9 @@ export default {
       loadingStatus.value = true
       await devideFinanceData()
       selectNewsName('yahooInternational')
+      router.push({
+        path: '/financeNews/yahooInternational'
+      })
       loadingStatus.value = false
     })
     /**

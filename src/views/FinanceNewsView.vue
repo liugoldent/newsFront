@@ -60,8 +60,15 @@
   <loading-view :loadingStatus="loadingStatus" />
 </template>
 <script>
-import { getCurrentInstance, onMounted, reactive, ref, inject } from 'vue'
-import { useRouter } from 'vue-router'
+import {
+  getCurrentInstance,
+  onMounted,
+  reactive,
+  ref,
+  inject,
+  watch,
+} from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import StockNewsListVue from '../components/Stock/StockNewsList.vue'
 import ScrollTopButton from '../components/ScrollTopButton.vue'
 import RectangleNameVue from '../components/RectangleName.vue'
@@ -81,6 +88,7 @@ export default {
   setup() {
     const { proxy } = getCurrentInstance()
     const router = useRouter()
+    const route = useRoute()
     const financeNews = proxy.axios.get(
       `${proxy.envURL}/stockApi/sheetData/financeNews`
     )
@@ -121,10 +129,23 @@ export default {
       await devideFinanceData()
       selectNewsName('yahooInternational')
       router.push({
-        path: '/financeNews/yahooInternational'
+        path: '/financeNews/yahooInternational',
       })
       loadingStatus.value = false
     })
+    watch(
+      () => route.path,
+      () => {
+        const objKey = Object.keys(webType)
+        let routeKey = ''
+        for (let i = 0, len = objKey.length; i < len; i++) {
+          if (route.path.match(objKey[i])) {
+            routeKey = objKey[i]
+          }
+        }
+        selectNewsName(routeKey)
+      }
+    )
     /**
      * @description 取回sheets內的資料
      */
@@ -186,10 +207,12 @@ export default {
     let thisTimeSelectKey = ref('')
     let newsListInChild = ref([])
     const selectNewsName = function (inputName) {
-      thisTimeSelectKey.value = inputName
-      titleName.value = webType[inputName].name
-      titleHref.value = webType[inputName].link
-      newsListInChild.value = financeNewsSheetData[inputName]
+      if (inputName.length > 0) {
+        thisTimeSelectKey.value = inputName
+        titleName.value = webType[inputName].name
+        titleHref.value = webType[inputName].link
+        newsListInChild.value = financeNewsSheetData[inputName]
+      }
     }
     /**
      * @description 開啟關閉新聞網

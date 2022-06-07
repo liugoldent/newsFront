@@ -71,6 +71,7 @@
 </template>
 <script>
 import { computed } from 'vue'
+
 import { series700, series600 } from '../../public/color'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {

@@ -1,7 +1,7 @@
 <script>
 import { RouterLink, RouterView } from 'vue-router'
 import HomeCardVue from '../components/HomeCard.vue'
-import { ref, provide } from 'vue'
+import { ref } from 'vue'
 export default {
   components: {
     HomeCardVue,

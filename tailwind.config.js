@@ -3,7 +3,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        Monoton: ['Monoton', 'cursive'],
+        // sans: ["chiayifont", 'sans-serif']
       },
     },
     screens: {

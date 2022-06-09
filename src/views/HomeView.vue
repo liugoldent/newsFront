@@ -35,7 +35,7 @@ export default {
 <template>
   <div class="flex flex-wrap flex-col place-content-center h-max w-auto">
     <div class="text-center m-8">
-      <h1 class="text-9xl font-Monoton sm:text-6xl">News</h1>
+      <h1 class="text-9xl font-Chiayifont sm:text-6xl">News</h1>
     </div>
     <div class="flex flex-row flex-wrap justify-center items-center m-8 h-auto">
       <router-link to="/stock"><HomeCardVue :info="stockInfo" /></router-link>

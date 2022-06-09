@@ -21,7 +21,7 @@
       ></div>
     </div>
 
-    <h1 class="text-white text-3xl font-Monoton">Loading...</h1>
+    <h1 class="text-white text-3xl font-Chiayifont">Loading...</h1>
   </div>
 </template>
 <script>

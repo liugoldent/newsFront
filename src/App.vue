@@ -5,10 +5,12 @@ import { RouterLink, RouterView } from 'vue-router'
 import HomeViewVue from './views/HomeView.vue'
 import HeaderVue from './components/Header.vue'
 import FooterVue from './components/Footer.vue'
+import AdVue from './components/Ad.vue'
 export default {
   components: {
     HeaderVue,
     FooterVue,
+    AdVue,
   },
   setup() {
     let randomNumber = Math.floor(Math.random() * 16)
@@ -33,9 +35,10 @@ export default {
 </script>
 
 <template>
-  <div class="flex flex-col justify-between h-screen">
+  <div class="flex flex-col items-center justify-between h-screen">
     <HeaderVue />
     <RouterView> </RouterView>
+    <AdVue class="fixed bottom-8 right-2 z-10 my-2" />
     <FooterVue class="mt-auto" />
   </div>
 </template>

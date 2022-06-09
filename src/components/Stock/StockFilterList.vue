@@ -3,7 +3,7 @@
     <button
       v-for="data in chi_techList"
       :key="data.name"
-      class="p-2"
+      class="p-2 my-1"
       @click="conditionalSelection(data.key)"
     >
       <span

@@ -6,7 +6,7 @@
       h-full
       w-full
       bg-gray-900/70 bg-cover
-      z-10
+      z-20
       flex flex-col flex-wrap
       justify-center
       items-center

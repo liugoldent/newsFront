@@ -43,6 +43,10 @@ const router = createRouter({
           path: 'anueNews',
           component: () => import('../components/Stock/StockNewsList.vue'),
         },
+        {
+          path: 'pttStock',
+          component: () => import('../components/Stock/StockNewsList.vue'),
+        },
       ],
     },
   ],

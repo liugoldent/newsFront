@@ -122,6 +122,11 @@ export default {
         source: '鉅亨網',
         link: 'https://news.cnyes.com/news/cat/headline',
       },
+      pttStock: {
+        name: 'ptt - 股版',
+        source: 'ptt股版',
+        link: 'https://www.ptt.cc/bbs/Stock/index.html',
+      },
     }
     let loadingStatus = ref(true)
     onMounted(async () => {
@@ -206,12 +211,38 @@ export default {
     let titleHref = ref('')
     let thisTimeSelectKey = ref('')
     let newsListInChild = ref([])
-    const selectNewsName = function (inputName) {
-      if (inputName.length > 0) {
-        thisTimeSelectKey.value = inputName
-        titleName.value = webType[inputName].name
-        titleHref.value = webType[inputName].link
+    const selectNewsName = async function (inputName) {
+      thisTimeSelectKey.value = inputName
+      titleName.value = webType[inputName].name
+      titleHref.value = webType[inputName].link
+      if (inputName.length > 0 && !inputName.includes('ptt')) {
         newsListInChild.value = financeNewsSheetData[inputName]
+      }
+      if (inputName.length > 0 && inputName.includes('ptt')) {
+        newsListInChild.value = await setPttView(inputName)
+      }
+    }
+    /**
+     * 組成ptt在View上的格式
+     * @param {} inputName 此網站名稱為何
+     */
+    const setPttView = async function (inputName) {
+      const pttResult = await pttStockAllData
+      let result = []
+      if (pttResult.status === 200) {
+        const { crawData } = pttResult.data
+        for (let i = 0, len = crawData.length; i < len; i++) {
+          result.push({
+            title: crawData[i].title,
+            href: `https://www.ptt.cc${crawData[i].link}`,
+            subtitle: '',
+            time: crawData[i].date,
+            from: `熱度：${crawData[i].pushCount}`,
+            webName: webType[inputName].name,
+            source: webType[inputName].source,
+          })
+        }
+        return result
       }
     }
     /**

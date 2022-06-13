@@ -123,7 +123,7 @@ export default {
         link: 'https://news.cnyes.com/news/cat/headline',
       },
       pttStock: {
-        name: 'ptt - 股版',
+        name: ' ptt -  Stock 版',
         source: 'ptt股版',
         link: 'https://www.ptt.cc/bbs/Stock/index.html',
       },

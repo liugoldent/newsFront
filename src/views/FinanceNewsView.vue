@@ -1,9 +1,23 @@
 <template>
   <div class="flex flex-col justify-start items-center w-full">
-    <div class="flex flex-row justify-center items-center fixed right-0">
+    <div
+      class="flex flex-row justify-center items-center fixed right-0 z-30"
+      :class="{
+        'z-0': loadingStatus,
+      }"
+    >
       <font-awesome-icon
         icon="circle-arrow-left"
-        class="text-3xl cursor-pointer relative -right-8 z-20 duration-500 rounded-full  bg-red-100"
+        class="
+          text-3xl
+          cursor-pointer
+          relative
+          -right-8
+          z-20
+          duration-500
+          rounded-full
+          bg-red-100
+        "
         :class="{
           'rotate-180 ': !toggleNewsWeb,
           'translate-x-44': toggleNewsWeb,

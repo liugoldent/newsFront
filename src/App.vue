@@ -38,7 +38,7 @@ export default {
   <div class="flex flex-col items-center justify-between h-screen">
     <HeaderVue />
     <RouterView> </RouterView>
-    <AdVue class="fixed bottom-8 right-2 z-10 my-2" />
+    <AdVue class="fixed bottom-8 right-2 z-50 my-2" />
     <FooterVue class="mt-auto" />
   </div>
 </template>

@@ -66,7 +66,7 @@
         </div>
       </div>
     </div>
-    <router-view :newsData="newsListInChild"></router-view>
+    <router-view :newsData="newsListInChild" class="z-0"></router-view>
     <!-- 顯示新聞的名稱 -->
     <div class="fixed left-2 sm:visible md:visible invisible">
       <RectangleNameVue :titleName="titleName" :titleHref="titleHref" />

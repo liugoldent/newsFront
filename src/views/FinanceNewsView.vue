@@ -1,52 +1,55 @@
 <template>
   <div class="flex flex-col justify-start items-center w-full">
-    <div
-      class="
-        flex flex-row
-        justify-end
-        items-center
-        fixed
-        right-0
-        m-4
-        bg-slate-300
-        z-10
-        rounded
-        opacity-90
-        w-52
-        duration-500
-      "
-      :class="{ 'translate-x-44': toggleNewsWeb }"
-    >
+    <div class="flex flex-row justify-center items-center fixed right-0">
       <font-awesome-icon
         icon="circle-arrow-left"
-        class="text-2xl mr-1 cursor-pointer"
-        :class="{ 'rotate-180 ': !toggleNewsWeb }"
+        class="text-3xl cursor-pointer relative -right-8 z-20 duration-500"
+        :class="{
+          'rotate-180 ': !toggleNewsWeb,
+          'translate-x-44': toggleNewsWeb,
+        }"
         @click="toggleNewsWeb = !toggleNewsWeb"
         v-if="!loadingStatus"
       />
-      <div class="flex flex-col items-end">
-        <button
-          @click="selectNewsName(eachKey)"
-          v-for="eachKey in Object.keys(webType)"
-          :key="eachKey"
-          class="m-2"
-        >
-          <font-awesome-icon
-            v-if="eachKey === thisTimeSelectKey"
-            icon="newspaper"
-            class="mx-3"
-          />
-          <router-link :to="`/financeNews/${eachKey}`">
-            <p
-              class="inline"
-              :class="{
-                'underline underline-offset-4': eachKey === thisTimeSelectKey,
-              }"
-            >
-              {{ webType[eachKey].name }}
-            </p>
-          </router-link>
-        </button>
+      <div
+        class="
+          flex flex-row
+          justify-end
+          items-center
+          m-4
+          bg-slate-300
+          z-10
+          rounded
+          opacity-90
+          w-48
+          duration-500
+        "
+        :class="{ 'translate-x-44': toggleNewsWeb }"
+      >
+        <div class="flex flex-col items-end">
+          <button
+            @click="selectNewsName(eachKey)"
+            v-for="eachKey in Object.keys(webType)"
+            :key="eachKey"
+            class="m-2"
+          >
+            <font-awesome-icon
+              v-if="eachKey === thisTimeSelectKey"
+              icon="newspaper"
+              class="mx-3"
+            />
+            <router-link :to="`/financeNews/${eachKey}`">
+              <p
+                class="inline"
+                :class="{
+                  'underline underline-offset-4': eachKey === thisTimeSelectKey,
+                }"
+              >
+                {{ webType[eachKey].name }}
+              </p>
+            </router-link>
+          </button>
+        </div>
       </div>
     </div>
     <router-view :newsData="newsListInChild"></router-view>

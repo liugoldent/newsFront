@@ -46,7 +46,7 @@
                 :class="textColor600Array[index]"
               />
               <p
-                class="text-xl inline mx-2 relative bottom-2 sm:mx-4"
+                class="text-xl inline mx-2 relative bottom-2"
                 v-if="eachData.from.length > 0"
                 :class="textColor600Array[index]"
               >

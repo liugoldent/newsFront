@@ -3,7 +3,7 @@
     <div class="flex flex-row justify-center items-center fixed right-0">
       <font-awesome-icon
         icon="circle-arrow-left"
-        class="text-3xl cursor-pointer relative -right-8 z-20 duration-500"
+        class="text-3xl cursor-pointer relative -right-8 z-20 duration-500 rounded-full  bg-red-100"
         :class="{
           'rotate-180 ': !toggleNewsWeb,
           'translate-x-44': toggleNewsWeb,
@@ -17,7 +17,7 @@
           justify-end
           items-center
           m-4
-          bg-slate-300
+          bg-slate-400
           z-10
           rounded
           opacity-90

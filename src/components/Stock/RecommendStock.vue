@@ -58,7 +58,6 @@
 export default {
   props: ['signalData', 'shadowColor'],
   setup(props) {
-    console.log(props.shadowColor)
   },
 }
 </script>

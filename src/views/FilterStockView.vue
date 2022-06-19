@@ -224,7 +224,6 @@ export default {
      * @param {} thisTimeSignal 這次要組成的signal為何。ex：bullSignal1、bullSignal2...
      */
     const composeListData = function (thisTimeSignal) {
-      console.log(rawFilterStockData)
       const codeData = rawFilterStockData[thisTimeSignal].code
       let thisSignalAllData = []
       for (let j = 0, lenj = codeData.length; j < lenj; j++) {
@@ -265,7 +264,6 @@ export default {
       for (let i = 0, len = stockListKey.length; i < len; i++) {
         shadowColorArray.value.push(series200.shadowColor[number + i])
       }
-      console.log(shadowColorArray.value)
     }
     /**
      * @description 製造出title Name

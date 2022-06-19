@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-60 w-60 flex flex-col justify-center items-end"
+    class="h-auto w-60 flex flex-col justify-center items-end"
     :class="{ invisible: visiableStatus }"
   >
     <font-awesome-icon

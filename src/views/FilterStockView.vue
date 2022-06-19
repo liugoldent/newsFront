@@ -237,7 +237,9 @@ export default {
      * @description title列的css
      */
     const titleCss = computed(() => {
-      return marketType.value.length === 0 ? 'translate-y-44' : ''
+      return marketType.value.length === 0
+        ? 'sm:translate-y-20 md:translate-y-10 translate-y-44'
+        : ''
     })
     /**
      * @description 得到card的顏色

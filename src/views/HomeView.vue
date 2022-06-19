@@ -48,7 +48,7 @@ export default {
       <router-link to="/financeNews/yahooInternational"
         ><HomeCardVue :info="financeInfo"
       /></router-link>
-      <router-link to="/filtetstock"
+      <router-link to="/filterStock"
         ><HomeCardVue :info="filterStockInfo"
       /></router-link>
       <!-- <router-link to="/trend"><HomeCardVue :info="trendInfo" /></router-link> -->

@@ -23,8 +23,8 @@ const router = createRouter({
       component: () => import('../views/StockView.vue'),
     },
     {
-      path: '/filtetstock',
-      name: 'filtetstock',
+      path: '/filterStock',
+      name: 'filterStock',
       component: () => import('../views/FilterStockView.vue'),
     },
     {

@@ -46,7 +46,6 @@
             class="
               h-auto
               w-auto
-              border-double border-4
               rounded-lg
               flex flex-row
               justify-center
@@ -54,6 +53,7 @@
               mx-8
               cursor-pointer
             "
+            :class="{ 'border-double border-4 duration-500 border-red-400': marketType === 'bull' }"
           >
             <font-awesome-icon
               icon="arrow-trend-up"
@@ -68,7 +68,6 @@
             class="
               h-auto
               w-auto
-              border-double border-4
               rounded-lg
               flex flex-row
               justify-center
@@ -76,6 +75,7 @@
               mx-8
               cursor-pointer
             "
+            :class="{ 'border-double border-4 duration-500 border-green-400': marketType === 'bear' }"
           >
             <p class="text-4xl m-2 sm:text-2xl">空</p>
             <font-awesome-icon
@@ -277,6 +277,7 @@ export default {
       stockListKey,
       correspondWord, // 對應文字
       loadingStatus,
+      marketType, //現在是選到做多or做空
     }
   },
 }

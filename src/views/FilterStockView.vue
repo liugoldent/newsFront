@@ -40,7 +40,7 @@
         本網站與所推介分析之個別有價證券無不當之財務利益關係，本網站資料僅供參考，投資人應獨立判斷，審慎評估並自負投資風險。
       </p>
       <!-- 選擇button -->
-      <div class="flex flex-row justify-center items-center mt-8 self-end">
+      <div class="flex flex-row justify-center items-center mt-8 self-end w-auto">
         <button @click="stockShow('bull')">
           <div
             class="
@@ -53,7 +53,10 @@
               mx-8
               cursor-pointer
             "
-            :class="{ 'border-double border-4 duration-500 border-red-400': marketType === 'bull' }"
+            :class="{
+              'border-double border-4 duration-500 border-red-400':
+                marketType === 'bull',
+            }"
           >
             <font-awesome-icon
               icon="arrow-trend-up"
@@ -75,7 +78,10 @@
               mx-8
               cursor-pointer
             "
-            :class="{ 'border-double border-4 duration-500 border-green-400': marketType === 'bear' }"
+            :class="{
+              'border-double border-4 duration-500 border-green-400':
+                marketType === 'bear',
+            }"
           >
             <p class="text-4xl m-2 sm:text-2xl">空</p>
             <font-awesome-icon
@@ -106,9 +112,14 @@
           h-auto
         "
       >
-        <p class="appleCenter w-auto m-4 text-5xl sm:text-2xl">
-          {{ correspondWord[outlineIndex] }}
-        </p>
+        <div
+          class="flex flex-row justify-center items-center w-auto appleCenter mx-4"
+        >
+          <p class="border-none text-4xl mx-1 my-2 sm:text-2xl">{{ outlineIndex + 1 }}</p>
+          <p class="w-auto my-4 mx-2 text-5xl sm:text-2xl">
+            {{ correspondWord[outlineIndex] }}
+          </p>
+        </div>
         <div
           class="
             flex flex-row
@@ -151,7 +162,7 @@ import RectangleNameVue from '../components/RectangleName.vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faArrowTrendUp,
-  faArrowTrendDown,
+  faArrowTrendDown
 } from '@fortawesome/free-solid-svg-icons'
 library.add(faArrowTrendUp, faArrowTrendDown)
 export default {

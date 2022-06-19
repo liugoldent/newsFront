@@ -23,6 +23,11 @@ const router = createRouter({
       component: () => import('../views/StockView.vue'),
     },
     {
+      path: '/filtetstock',
+      name: 'filtetstock',
+      component: () => import('../views/FilterStockView.vue'),
+    },
+    {
       path: '/financeNews',
       name: 'financeNews',
       component: () => import('../views/FinanceNewsView.vue'),

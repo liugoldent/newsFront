@@ -68,7 +68,7 @@
     </div>
     <router-view :newsData="newsListInChild" class="z-0"></router-view>
     <!-- 顯示新聞的名稱 -->
-    <div class="fixed left-2 sm:visible md:visible invisible">
+    <div class="sm:visible md:visible invisible">
       <RectangleNameVue :titleName="titleName" :titleHref="titleHref" />
     </div>
     <!-- 捲軸到頂端 -->
@@ -229,6 +229,7 @@ export default {
     let thisTimeSelectKey = ref('')
     let newsListInChild = ref([])
     const selectNewsName = async function (inputName) {
+      if(inputName === '') return
       thisTimeSelectKey.value = inputName
       titleName.value = webType[inputName].name
       titleHref.value = webType[inputName].link

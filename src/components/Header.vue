@@ -17,11 +17,11 @@
             <a class="mr-4 hover:underline md:mr-6">財經新聞</a>
           </router-link>
         </li>
-        <!-- <li>
-          <router-link to="/trend"
-            ><a class="mr-4 hover:underline md:mr-6">熱搜關鍵字</a></router-link
+        <li>
+          <router-link to="/filtetstock"
+            ><a class="mr-4 hover:underline md:mr-6">每日選股</a></router-link
           >
-        </li> -->
+        </li>
       </ul>
     </div>
   </header>

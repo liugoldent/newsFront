@@ -4,7 +4,7 @@ import axios from 'axios'
 import App from './App.vue'
 import router from './router'
 import './index.css'
-import * as sharedModule_str from './public/stringConvert'
+import * as sharedModule_str from './public/publicFun'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Loading from './components/Loading.vue'
 

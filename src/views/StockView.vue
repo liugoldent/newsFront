@@ -133,7 +133,7 @@
       />
     </div>
     <!-- 方塊顯示點選到的法人長方形 -->
-    <div class="fixed left-2 sm:visible md:visible invisible">
+    <div class="sm:visible md:visible invisible">
       <RectangleNameVue :titleName="titleName" :titleHref="titleHref" />
     </div>
     <!-- 捲軸到頂端 -->

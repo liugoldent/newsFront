@@ -10,6 +10,7 @@
         sm:h-72
         duration-500
         m-28
+        -ml-6
         md:m-20
         sm:m-6
         border-b-4

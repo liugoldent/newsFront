@@ -178,7 +178,6 @@ export default {
       await useGetTech.getSheetData()
       loadingStatus.value = false
     })
-
     /**
      * @description 設定api 與 template 連結 => 點選法人買賣種類，會對應到左上角的title
      * @param {*} investType
@@ -195,7 +194,7 @@ export default {
         )
         titleName.value = selectTitle.name
         titleHref.value = selectTitle.link
-        if (investType === 'localForeign_same') {
+        if (investType.includes('mainInvest')) {
           selectedButton.value = investType
           composeSameArray()
           return
@@ -398,6 +397,16 @@ export default {
     let buttonContent = ref([])
     buttonContent.value = [
       {
+        name: '上市自營買賣超',
+        key: 'employed_listed',
+        link: 'https://fubon-ebrokerdj.fbs.com.tw/z/zg/zgk.djhtm?A=DB&B=0&C=1',
+      },
+      {
+        name: '上櫃自營買賣超',
+        key: 'employed_otc',
+        link: 'https://fubon-ebrokerdj.fbs.com.tw/z/zg/zgk.djhtm?A=DB&B=1&C=1',
+      },
+      {
         name: '上市投信買賣超',
         key: 'local_listed',
         link: 'https://fubon-ebrokerdj.fbs.com.tw/Z/ZG/ZGK_DD.djhtm',
@@ -418,63 +427,86 @@ export default {
         link: 'https://fubon-ebrokerdj.fbs.com.tw/z/zg/zgk.djhtm?A=D&B=1&C=1',
       },
       {
+        name: '主力同步買賣超',
+        key: 'mainInvest_all',
+        link: '',
+      },
+      {
         name: '外資投信同步買賣超',
-        key: 'localForeign_same',
+        key: 'mainInvest_fl',
         link: '',
       },
     ]
     /**
-     * 組成上市外資投信同買資料
+     * 組成主力同買同賣資料
      */
     const composeSameArray = async function () {
       const { data } = await investAllData
-
-      const buyRes = concatArr(
-        [
-          data['local_listed'],
-          data['local_otc'],
-          data['foreign_listed'],
-          data['foreign_otc'],
-        ],
-        'buy'
-      )
-      const sellRes = concatArr(
-        [
-          data['local_listed'],
-          data['local_otc'],
-          data['foreign_listed'],
-          data['foreign_otc'],
-        ],
-        'sell'
-      )
+      const mainInvestObj = {
+        mainInvest_fl: ['foreign', 'local'],
+        mainInvest_all: ['foreign', 'local', 'employed'],
+      }
+      const selectType = mainInvestObj[selectedButton.value]
+      const listedDataFunc = function () {
+        let list = []
+        for (let i = 0, len = selectType.length; i < len; i++) {
+          list.push(data[`${selectType[i]}_listed`])
+        }
+        return list
+      }
+      const otcDataFunc = function () {
+        let list = []
+        for (let i = 0, len = selectType.length; i < len; i++) {
+          list.push(data[`${selectType[i]}_otc`])
+        }
+        return list
+      }
+      const listedBuyRes = concatArr(listedDataFunc(), 'buy')
+      const otcBuyRes = concatArr(otcDataFunc(), 'buy')
+      const listedSellRes = concatArr(listedDataFunc(), 'sell')
+      const otcSellRes = concatArr(otcDataFunc(), 'sell')
       buy_page_list.value = composeBaseBuySell(
-        buyRes.no,
-        buyRes.code,
-        buyRes.name
+        listedBuyRes.name.concat(otcBuyRes.name).map((el, index) => index + 1),
+        listedBuyRes.code.concat(otcBuyRes.code),
+        listedBuyRes.name.concat(otcBuyRes.name)
       )
       sell_page_list.value = composeBaseBuySell(
-        sellRes.no,
-        sellRes.code,
-        sellRes.name
+        listedSellRes.name
+          .concat(otcSellRes.name)
+          .map((el, index) => index + 1),
+        listedSellRes.code.concat(otcSellRes.code),
+        listedSellRes.name.concat(otcSellRes.name)
       )
     }
-    const concatArr = function (arrList, type) {
-      let name = []
-      let code = []
-      let no = []
-      for (let i = 0, len = arrList.length; i < len; i++) {
-        name.push(...arrList[i][`${arrList[i].type}_${type}_name`])
-        code.push(...arrList[i][`${arrList[i].type}_${type}_code`])
-      }
-      name = name.filter((item, index) => name.indexOf(item) !== index)
-      code = code.filter((item, index) => code.indexOf(item) !== index)
-      no = name.map((index) => no.push(index))
+    const concatArr = function (arrListed, type) {
+      try {
+        let name = []
+        let code = []
+        for (let i = 0, len = arrListed.length; i < len; i++) {
+          name.push(arrListed[i][`${arrListed[i].type}_${type}_name`])
+          code.push(arrListed[i][`${arrListed[i].type}_${type}_code`])
+        }
+        name = findRepeatEle(name)
+        code = findRepeatEle(code)
 
-      return {
-        name,
-        code,
-        no,
+        return {
+          name,
+          code,
+        }
+      } catch (error) {
+        console.log(error)
       }
+    }
+    const findRepeatEle = function (arr) {
+      return arr.reduce(function (accumulator, curValue) {
+        if (accumulator.length === 0) {
+          accumulator = curValue
+          return accumulator
+        } else {
+          accumulator = accumulator.filter((ele) => curValue.includes(ele))
+          return accumulator
+        }
+      }, [])
     }
     /**
      * @description 切換選單進入or移出

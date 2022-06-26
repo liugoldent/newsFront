@@ -66,6 +66,40 @@
         </div>
       </div>
     </div>
+    <transition>
+      <div
+        v-if="thisTimeSelectKey.includes('ptt')"
+        class="
+          fixed
+          left-2
+          top-28
+          w-auto
+          h-auto
+          rounded
+          opacity-80
+          flex flex-col
+          items-start
+          justify-center
+          z-10
+          bg-slate-400
+        "
+      >
+        <button
+          v-for="(ele, index) in Object.keys(pushFilterList)"
+          :key="index"
+          @click="filterPttList(ele)"
+          class="p-2"
+        >
+          <p
+            :class="{
+              'text-red-700': filterScale === ele && filterScale !== 'cancel',
+            }"
+          >
+            {{ pushFilterList[ele].name }}
+          </p>
+        </button>
+      </div>
+    </transition>
     <router-view :newsData="newsListInChild" class="z-0"></router-view>
     <!-- 顯示新聞的名稱 -->
     <div class="sm:visible md:visible invisible">
@@ -143,6 +177,28 @@ export default {
         name: ' ptt -  Stock 版',
         source: 'ptt股版',
         link: 'https://www.ptt.cc/bbs/Stock/index.html',
+      },
+    }
+    const pushFilterList = {
+      hot: {
+        name: '爆',
+        pushCount: 99,
+      },
+      lg: {
+        name: '> 75',
+        pushCount: 75,
+      },
+      md: {
+        name: '> 50',
+        pushCount: 50,
+      },
+      sm: {
+        name: '> 25',
+        pushCount: 25,
+      },
+      cancel: {
+        name: '取消',
+        pushCount: 0,
       },
     }
     let loadingStatus = ref(true)
@@ -229,11 +285,12 @@ export default {
     let thisTimeSelectKey = ref('')
     let newsListInChild = ref([])
     const selectNewsName = async function (inputName) {
-      if(inputName === '') return
+      if (inputName === '') return
       thisTimeSelectKey.value = inputName
       titleName.value = webType[inputName].name
       titleHref.value = webType[inputName].link
       if (inputName.length > 0 && !inputName.includes('ptt')) {
+        filterScale.value = ''
         newsListInChild.value = financeNewsSheetData[inputName]
       }
       if (inputName.length > 0 && inputName.includes('ptt')) {
@@ -250,32 +307,65 @@ export default {
       if (pttResult.status === 200) {
         const { crawData } = pttResult.data
         for (let i = 0, len = crawData.length; i < len; i++) {
-          result.push({
-            title: crawData[i].title,
-            href: `https://www.ptt.cc${crawData[i].link}`,
-            subtitle: '',
-            time: crawData[i].date,
-            from: `熱度：${crawData[i].pushCount}`,
-            webName: webType[inputName].name,
-            source: webType[inputName].source,
-          })
+          if (countFilter(crawData[i].pushCount)) {
+            result.push({
+              title: crawData[i].title,
+              href: `https://www.ptt.cc${crawData[i].link}`,
+              subtitle: '',
+              time: crawData[i].date,
+              from: `熱度：${crawData[i].pushCount}`,
+              webName: webType[inputName].name,
+              source: webType[inputName].source,
+            })
+          }
         }
         return result
       }
     }
     /**
+     * @description 判斷是否要篩選資料
+     */
+    const countFilter = function (pushCount) {
+      try {
+        if (filterScale.value === '' || filterScale.value === 'cancel') {
+          return true
+        }
+        let count = 0
+        if (pushCount === '') {
+          count = 0
+        } else if (pushCount === '爆') {
+          count = 100
+        } else {
+          count = +pushCount
+        }
+        const defPushCount = pushFilterList[filterScale.value].pushCount
+        return count >= defPushCount ? true : false
+      } catch (e) {
+        console.error(e.message)
+      }
+    }
+    /**
      * @description 開啟關閉新聞網
-     * @param {} param0
      */
     let toggleNewsWeb = ref(window.innerWidth < 1200 ? true : false)
     /**
      * @description 要給子component的顏色
      */
     const rectangleColor = inject('rectangleColor')
-
+    /**
+     * @description filter ptt熱度文章
+     */
+    let filterScale = ref('')
+    const filterPttList = async function (scale) {
+      filterScale.value = scale
+      await selectNewsName('pttStock')
+    }
     return {
       financeNewsSheetData, // 爬出來的財經資料
       selectNewsName, //選到哪個新聞的名稱
+      pushFilterList, //filter Ptt熱門文章的列表
+      filterPttList, // 給client點選的function
+      filterScale, // 點選到的篩選級別
       titleName, // 點完之後要顯示在畫面上的名稱
       titleHref, // 點完之後要顯示在畫面左上角的連結
       webType, // 所有的新聞網站
@@ -288,3 +378,14 @@ export default {
   },
 }
 </script>
+<style scope>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 1s;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>

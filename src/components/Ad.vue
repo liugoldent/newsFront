@@ -1,11 +1,11 @@
 <template>
   <div
-    class="h-auto w-auto flex flex-col justify-center items-end"
+    class="h-56 w-56 flex flex-col justify-center items-end"
     :class="{ invisible: visiableStatus }"
   >
     <font-awesome-icon
       :icon="['fas', 'xmark']"
-      class="border-none text-4xl text-red-500 cursor-pointer relative top-5"
+      class="border-none text-4xl text-red-500 cursor-pointer relative top-0"
       @click="visiableStatus = !visiableStatus"
     />
     <div
@@ -13,17 +13,17 @@
       :key="product.name"
       class="rounded-lg flex flex-col justify-center items-center"
     >
-      <a
+      <!-- <a
         href="
 https://line.me/ti/g2/V1O2JN2etzTffgjw5NIq5-JvXF5FToNydOV5bw?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
         ><font-awesome-icon
           :icon="['fab', 'line']"
           class="border-none text-8xl text-green-700 cursor-pointer"
-      /></a>
-      <!-- <p class="text-xl bg-red-400 w-full text-center">{{ product.name }}</p> -->
-      <!-- <a :href="product.href"
-        ><img :src="product.src" class="animate-pulse hover:animate-none"
       /></a> -->
+      <p class="text-xl bg-red-400 w-full text-center">{{ product.name }}</p>
+      <a :href="product.href"
+        ><img :src="product.src" class="animate-pulse hover:animate-none"
+      /></a>
     </div>
   </div>
 </template>

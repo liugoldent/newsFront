@@ -28,6 +28,11 @@ const router = createRouter({
       component: () => import('../views/FilterStockView.vue'),
     },
     {
+      path: '/igView',
+      name: 'igView',
+      component: () => import('../views/IgView.vue'),
+    },
+    {
       path: '/financeNews',
       name: 'financeNews',
       component: () => import('../views/FinanceNewsView.vue'),

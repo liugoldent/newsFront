@@ -22,6 +22,11 @@
             ><a class="mr-4 hover:underline md:mr-6">每日選股/</a></router-link
           >
         </li>
+        <!-- <li>
+          <router-link to="/igView"
+            ><a class="mr-4 hover:underline md:mr-6">Ig 貼文/</a></router-link
+          >
+        </li> -->
       </ul>
     </div>
   </header>

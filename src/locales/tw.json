@@ -1,0 +1,5 @@
+{
+  "__hello_world": "您好 {codeName} World",
+    "intro": "For a guide and recipes on how to configure / customize this project, {newline} checkout out the {doc}.",
+    "vueCliDoc": "vue-cli documentation"
+}

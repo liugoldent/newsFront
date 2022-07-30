@@ -5,19 +5,14 @@
     <div class="m-5 flex flex-col justify-center items-center" id="titleImg">
       <img src="https://picsum.photos/1000/800?random=100" />
       <div class="absolute rounded-lg bg-slate-200 opacity-80">
-        <p class="p-16 text-center text-9xl">0721 量增</p>
+        <p class="p-16 text-center text-9xl">0728 量增</p>
         <p class="p-16 text-center text-9xl">站上月線</p>
       </div>
     </div>
     <div
       v-for="(data, index) in list"
       :key="index"
-      class="
-        flex flex-col
-        justify-center
-        items-center
-        m-2
-      "
+      class="flex flex-col justify-center items-center m-2"
     >
       <div
         class="m-5 flex flex-col justify-center items-center w-1000px h-800px"
@@ -36,21 +31,41 @@
 import { reactive } from 'vue'
 import html2canvas from 'html2canvas'
 import Canvas2Image from 'canvas2image-2'
+import { isTemplateNode } from '@vue/compiler-core'
 export default {
   setup() {
     const list = reactive([
-      ['4919.TW', '新唐'],
-      ['3035.TW', '智原'],
-      ['3105.TW', '穩懋'],
-      ['6770.TW', '力積電'],
-      ['2603.TW', '長榮'],
-      ['3624.TW', '光頡'],
-      ['4931.TW', '新盛力'],
-      ['5608.TW', '四維航'],
-      ['6104.TW', '創惟'],
-    ])
+      ['1513.TW', '中興電'],
+      ['1605.TW', '華新'],
+      ['2882.TW', '國泰金'],
+      ['2891.TW', '中信金'],
+      ['4114.TW', '健喬']
+      ]
+    )
+    function parseCookie() {
+      var cookieObj = {}
+      var cookieAry = document.cookie.split(';')
+      var cookie
+
+      for (let i = 0, l = cookieAry.length; i < l; ++i) {
+        cookie = cookieAry[i].trim()
+        cookie = cookie.split('=')
+        cookieObj[cookie[0]] = cookie[1]
+      }
+
+      return cookieObj
+    }
+
+    function getCookieByName(name) {
+      var value = parseCookie()[name]
+      if (value) {
+        value = decodeURIComponent(value)
+      }
+
+      return value
+    }
     const downloadImg = async function () {
-      for (let i = 1; i <= 1; i++) {
+      for (let i = 0; i <= list.length; i++) {
         const el = document.querySelector(`#igImg${i}`)
 
         const options = {

@@ -7,7 +7,7 @@ import './index.css'
 import * as sharedModule_str from './public/publicFun'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Loading from './components/Loading.vue'
-
+import i18n from './plugins/i18n'
 console.log(process.env.NODE_ENV)
 const app = createApp(App)
         .component('font-awesome-icon', FontAwesomeIcon)
@@ -25,6 +25,7 @@ axios.defaults.timeout = 50000
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8' // 定義內容類型為application....
 axios.defaults.baseURL = '/api' // 打api的基本URL，打任何網址都會加上這個
 
+app.use(i18n)
 app.use(createPinia())
 app.use(router)
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center items-center w-full">
+  <main class="flex flex-col justify-center items-center w-full">
     <div
       class="
         flex flex-col
@@ -143,7 +143,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </main>
   <!-- 顯示更新日期與多方空方 -->
   <div class="visible">
     <RectangleNameVue :titleName="titleName" :titleHref="''" />

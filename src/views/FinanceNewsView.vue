@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-start items-center w-full">
+  <main class="flex flex-col justify-start items-center w-full">
     <div
       class="flex flex-row justify-center items-center fixed right-0 z-30"
       :class="{
@@ -107,7 +107,7 @@
     </div>
     <!-- 捲軸到頂端 -->
     <ScrollTopButton />
-  </div>
+  </main>
   <loading-view :loadingStatus="loadingStatus" />
 </template>
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-start items-center">
+  <main class="flex flex-col justify-start items-center">
     <!-- 左右方button -->
     <div class="flex flex-row justify-between w-full fixed z-10 m-10">
       <button
@@ -76,7 +76,7 @@
           style="color: red"
           class="mr-2"
         />
-        <span
+        <title
           class="inline"
           :class="{
             'underline underline-offset-2 text-red-600':
@@ -84,7 +84,7 @@
           }"
         >
           {{ content.name }}
-        </span>
+        </title>
       </button>
     </div>
     <!-- 右方filter list -->
@@ -138,7 +138,7 @@
     </div>
     <!-- 捲軸到頂端 -->
     <ScrollTopButton />
-  </div>
+  </main>
   <BlackMirrorVue :mirrorStatus="modalStatus" />
   <loading-view :loadingStatus="loadingStatus" />
 </template>

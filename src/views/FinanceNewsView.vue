@@ -143,7 +143,7 @@ export default {
     const financeNews = proxy.axios.get(
       `${proxy.envURL}/stockApi/sheetData/financeNews`
     )
-    const pttStockAllData = proxy.axios.get(
+    const pttStockAllData = proxy.axios.post(
       `${proxy.envURL}/pttApi/pttarticlelist`
     )
     let financeNewsSheetData = reactive({

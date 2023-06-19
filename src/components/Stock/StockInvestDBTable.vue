@@ -31,7 +31,7 @@
             ease-in-out
             duration-500
           "
-          v-for="eachData in chi_investData"
+          v-for="(eachData, index) in chi_investData"
           @click="emit('openModal', eachData)"
           :key="eachData.name"
         >
@@ -46,7 +46,7 @@
               whitespace-nowrap
             "
           >
-            {{ eachData.no || '' }}
+            {{ index+1 || '' }}
           </th>
           <td class="px-10 py-4">{{ eachData.code || '' }}</td>
           <td class="px-10 py-4">{{ eachData.name || '' }}</td>

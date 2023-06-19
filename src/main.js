@@ -18,7 +18,7 @@ app.config.globalProperties.sharedModule_str = sharedModule_str
 app.config.globalProperties.axios = axios
 app.config.globalProperties.envURL =
   process.env.NODE_ENV === 'development'
-    ? 'http://127.0.0.1:8080'
+    ? 'http://127.0.0.1:8000'
     : 'https://news-backend-g.herokuapp.com'
 
 axios.defaults.timeout = 50000

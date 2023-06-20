@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed left-2 top-20 sm:top-16 md:top-24">
+  <div class="fixed left-1 top-18 sm:top-16 md:top-24">
     <span
       class="
         absolute

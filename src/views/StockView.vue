@@ -20,13 +20,15 @@
     </div>
     <!-- 左方選單List -->
     <div
-      class="flex flex-col justify-center items-start bg-slate-300 opacity-90 fixed left-0 z-10 my-20 p-4 rounded-md duration-500"
+      class="flex flex-col justify-center items-start bg-slate-300/50 opacity-90 fixed left-0 z-10 my-20 p-4 rounded-md duration-500"
       :class="{ '-translate-x-full': toggleInvestStatus }"
     >
       <p class="border-l-2 border-b-2 rounded-b-md border-red-500 p-2 mb-1">
         資料更新時間：06/19
       </p>
-      <p class="border-l-2 border-b-2 rounded-b-md border-red-500 p-2 mb-1">
+      <p
+        class="border-l-2 border-t-2 rounded-b-md border-blue-500 p-2 mb-1 mt-1"
+      >
         法人 - 1
       </p>
       <div class="flex">
@@ -51,7 +53,9 @@
           </label>
         </template>
       </div>
-      <p class="border-l-2 border-b-2 rounded-b-md border-red-500 p-2 mb-1">
+      <p
+        class="border-l-2 border-t-2 rounded-b-md border-blue-500 p-2 mb-1 mt-1"
+      >
         法人 - 2
       </p>
       <div class="flex">
@@ -76,7 +80,9 @@
           </label>
         </template>
       </div>
-      <p class="border-l-2 border-b-2 rounded-b-md border-red-500 p-2 mb-1">
+      <p
+        class="border-l-2 border-t-2 rounded-b-md border-blue-500 p-2 mb-1 mt-1"
+      >
         市場類別
       </p>
       <div class="flex">
@@ -101,7 +107,9 @@
           </label>
         </template>
       </div>
-      <p class="border-l-2 border-b-2 rounded-b-md border-red-500 p-2 mb-1">
+      <p
+        class="border-l-2 border-t-2 rounded-b-md border-blue-500 p-2 mb-1 mt-1"
+      >
         累積日期
       </p>
       <div class="flex">
@@ -126,12 +134,20 @@
           </label>
         </template>
       </div>
-      <button
-        @click="getInvestCombineData"
-        class="rounded-md border border-gray-500 p-2 mb-1"
-      >
-        Search
-      </button>
+      <div class="flex flex-row items-center justify-between w-full">
+        <button
+          @click="getInvestCombineData"
+          class="self-center relative top-9 w-100 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 border-blue-500 hover:border-blue-600 hover:bg-blue-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center"
+        >
+          <span class="mx-auto">搜尋</span>
+        </button>
+        <button
+          @click="postInvestorDB"
+          class="self-center relative top-9 w-100 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 border-blue-500 hover:border-blue-600 hover:bg-blue-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center"
+        >
+          <span class="mx-auto">更新資料庫</span>
+        </button>
+      </div>
     </div>
     <!-- 主要內容table -->
     <div
@@ -234,6 +250,21 @@ export default {
         sell_page_list.value = data.sell;
       } catch (error) {
         console.error(error);
+      }
+    };
+    /**
+     * @description 更新法人資料庫
+     */
+    const postInvestorDB = async function () {
+      try {
+        loadingStatus.value = true;
+        const { status } = await proxy.axios.post(
+          `${proxy.envURL}/stock/investor`
+        );
+      } catch (e) {
+        console.error(e.message);
+      } finally {
+        loadingStatus.value = false;
       }
     };
     const getApiRouteKey = function () {
@@ -380,6 +411,7 @@ export default {
     return {
       getInvestCombineData, // 取得法人買賣超資料（打api
       troggleModalF, // emit上來的function，目的是用於開啟關閉視窗
+      postInvestorDB, // 更新法人資料庫
       toggleInvestStatus, // 切換法人買賣超出現與否的參數
       toggleTechStatus, // 切換技術分析出現與否的參數
       buy_page_list, // 法人買超資料

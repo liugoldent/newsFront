@@ -17,35 +17,46 @@
         v-if="!loadingStatus"
       />
       <div
-        class="flex flex-row justify-end items-center m-4 bg-slate-400 z-10 rounded opacity-90 w-48 duration-500"
+        class="flex flex-col justify-end items-center m-4 bg-slate-400/30 z-10 rounded opacity-90 w-48 duration-500"
         :class="{ 'translate-x-44': toggleNewsWeb }"
       >
+      <!-- 新聞清單 -->
         <div class="flex flex-col items-end">
           <button
             @click="selectNewsNameToList(eachKey)"
-            v-for="eachKey in Object.keys(webType)"
-            :key="eachKey"
+            v-for="eachKey in webType"
+            :key="eachKey['apiRoute']"
             class="m-2"
           >
-            <font-awesome-icon
-              v-if="eachKey === thisTimeSelectKey"
-              icon="newspaper"
-              class="mx-3"
-            />
-            <div>
-              <p
-                class="inline"
-                :class="{
-                  'underline underline-offset-4': eachKey === thisTimeSelectKey,
-                }"
-              >
-                {{ webType[eachKey].name }}
-              </p>
-            </div>
+            <template class="flex flex-row items-end">
+              <font-awesome-icon
+                v-if="eachKey['apiRoute'] === thisTimeSelectKey"
+                icon="newspaper"
+                class="mx-3"
+              />
+              <div>
+                <p
+                  class="inline"
+                  :class="{
+                    'underline underline-offset-4':
+                      eachKey['apiRoute'] === thisTimeSelectKey,
+                  }"
+                >
+                  {{ eachKey.name }}
+                </p>
+              </div>
+            </template>
           </button>
+
         </div>
+        <button @click="updateNewsList"
+            class="relative top-5 w-100 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 border-blue-500 hover:border-blue-600 hover:bg-blue-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center"
+          >
+            <span class="mx-auto">更新資料庫</span>
+          </button>
       </div>
     </div>
+    <!-- ptt filter -->
     <transition>
       <div
         v-if="thisTimeSelectKey.includes('ptt')"
@@ -67,7 +78,10 @@
         </button>
       </div>
     </transition>
-    <router-view :newsData="newsListInChild" class="z-0"></router-view>
+    <StockNewsListVue
+      :newsData="newsListInChild"
+      class="z-0"
+    ></StockNewsListVue>
     <!-- 顯示新聞的名稱 -->
     <div class="sm:visible md:visible invisible">
       <RectangleNameVue :titleName="titleName" :titleHref="titleHref" />
@@ -105,41 +119,50 @@ export default {
   },
   setup() {
     const { proxy } = getCurrentInstance();
-    const router = useRouter();
-    const route = useRoute();
-    let financeNewsSheetData = reactive({
-      yahooInternational: [],
-      yahooTwStock: [],
-      yahooHot: [],
-      anueNews: [],
-    });
-    const webType = {
-      yahooInternational: {
-        name: "yahoo 國際財經",
+    const webType = [
+      {
+        // key: 'yahooInternational',
+        name: "yahoo 國際新聞",
         source: "yahoo",
         link: "https://tw.stock.yahoo.com/intl-markets",
+        apiRoute: "yahooIntl",
       },
-      yahooTwStock: {
+      {
+        // key: 'yahooTwStock',
         name: "yahoo 台股盤勢",
         source: "yahoo",
         link: "https://tw.stock.yahoo.com/tw-market",
+        apiRoute: "yahooTwMarket",
       },
-      yahooHot: {
-        name: "yahoo 熱門文章",
+      {
+        // key: 'yahooHot',
+        name: "yahoo 重點要聞",
         source: "yahoo",
         link: "https://tw.stock.yahoo.com/news/",
+        apiRoute: "yahooNews",
       },
-      anueNews: {
-        name: "鉅亨 - 最新新聞",
-        source: "鉅亨網",
-        link: "https://news.cnyes.com/news/cat/headline",
-      },
-      pttStock: {
+      {
+        // key: 'pttStock',
         name: " ptt -  Stock 版",
         source: "ptt股版",
         link: "https://www.ptt.cc/bbs/Stock/index.html",
+        apiRoute: "pttStock",
       },
-    };
+      {
+        // key: 'anueNews',
+        name: "鉅亨 - 最新新聞",
+        source: "鉅亨網",
+        link: "https://news.cnyes.com/news/cat/headline",
+        apiRoute: "cnyes",
+      },
+      {
+        // key: 'liveNews',
+        name: "工商時報",
+        source: "工商時報",
+        link: "https://news.cnyes.com/news/cat/headline",
+        apiRoute: "liveNews",
+      },
+    ];
     const pushFilterList = {
       hot: {
         name: "爆",
@@ -162,6 +185,9 @@ export default {
         pushCount: 0,
       },
     };
+    /**
+     * @description 設定 loadingStatus
+     */
     let loadingStatus = ref(true);
     onMounted(async () => {
       try {
@@ -172,58 +198,6 @@ export default {
         loadingStatus.value = false;
       }
     });
-    watch(
-      () => route.path,
-      () => {
-        const objKey = Object.keys(webType);
-        let routeKey = "";
-        for (let i = 0, len = objKey.length; i < len; i++) {
-          if (route.path.match(objKey[i])) {
-            routeKey = objKey[i];
-          }
-        }
-        selectNewsName(routeKey);
-      }
-    );
-    /**
-     * @description 組成畫面上的資料
-     * @param {*} rawSheetData
-     * @param {*} type 是哪個財經網來的
-     */
-    const composeViewData = function (rawSheetData, type) {
-      let result = [];
-      for (let i = 0, len = rawSheetData.title.length; i < len; i++) {
-        const fromStr = rawSheetData.from[i] || ""; // 新聞來源為何
-        const timeStr = rawSheetData.time[i].replace("t-", "") || ""; // 時間為何
-        if (type === "anueNews") {
-          const allReplaceString = `${timeStr}${fromStr}`; // 要取代掉的字為何（因應鉅亨網標題不同，所以先組出replace string）
-          const baseHref = "https://news.cnyes.com/news/id/";
-          const idNumber = rawSheetData.href[i].match(/\d+/g).join();
-          rawSheetData.title[i] = rawSheetData.title[i].replace(
-            allReplaceString,
-            ""
-          ); // 取代之後的title為何
-          rawSheetData.href[i] = `${baseHref}${idNumber}`; // 最後鉅亨的href為何
-        }
-        result.push({
-          title: rawSheetData.title[i],
-          href: rawSheetData.href[i],
-          subtitle: separateSubTitle(rawSheetData.subtitle[i]),
-          time: timeStr,
-          from: fromStr,
-          webName: webType[type].name,
-          source: webType[type].source,
-        });
-      }
-      return result;
-    };
-    const separateSubTitle = function (subtitle) {
-      if (subtitle !== undefined) {
-        return subtitle.split("。");
-      } else {
-        return [];
-      }
-    };
     /**
      * @description 點選按鈕改變news list 內容
      */
@@ -231,70 +205,39 @@ export default {
     let titleHref = ref("");
     let thisTimeSelectKey = ref("");
     let newsListInChild = ref([]);
-    const selectNewsName = async function (inputName) {
-      if (inputName === "") return;
-      thisTimeSelectKey.value = inputName;
-      titleName.value = webType[inputName].name;
-      titleHref.value = webType[inputName].link;
-      if (inputName.length > 0 && !inputName.includes("ptt")) {
-        filterScale.value = "";
-        newsListInChild.value = financeNewsSheetData[inputName];
-      }
-      if (inputName.length > 0 && inputName.includes("ptt")) {
-        newsListInChild.value = await setPttView(inputName);
-      }
-    };
     /**
      * @description 點擊新聞網名稱，打API
      */
-    const selectNewsNameToList = function (inputName) {
-      console.log(inputName);
-    };
-    /**
-     * 組成ptt在View上的格式
-     * @param {} inputName 此網站名稱為何
-     */
-    const setPttView = async function (inputName) {
-      const pttResult = await pttStockAllData;
-      let result = [];
-      if (pttResult.status === 200) {
-        const { crawData } = pttResult.data;
-        for (let i = 0, len = crawData.length; i < len; i++) {
-          if (countFilter(crawData[i].pushCount)) {
-            result.push({
-              title: crawData[i].title,
-              href: `https://www.ptt.cc${crawData[i].link}`,
-              subtitle: "",
-              time: crawData[i].date,
-              from: `熱度：${crawData[i].pushCount}`,
-              webName: webType[inputName].name,
-              source: webType[inputName].source,
-            });
-          }
-        }
-        return result;
+    const selectNewsNameToList = async function (inputItem) {
+      try {
+        const { apiRoute } = inputItem;
+        const { data } = await proxy.axios.post(
+          `${proxy.envURL}/stock/news/${apiRoute}`
+        );
+        titleName.value = inputItem.name;
+        titleHref.value = inputItem.link;
+        thisTimeSelectKey.value = inputItem.apiRoute;
+        newsListInChild.value = data;
+      } catch (e) {
+        console.error(e.message);
       }
     };
     /**
-     * @description 判斷是否要篩選資料
+     * @description 更新newList
      */
-    const countFilter = function (pushCount) {
+    const updateNewsList = async function () {
       try {
-        if (filterScale.value === "" || filterScale.value === "cancel") {
-          return true;
+        loadingStatus.value = true;
+        const { status } = await proxy.axios.post(
+          `${proxy.envURL}/stock/news/`
+        );
+        if (status === 200) {
+          loadingStatus.value = false;
         }
-        let count = 0;
-        if (pushCount === "") {
-          count = 0;
-        } else if (pushCount === "爆") {
-          count = 100;
-        } else {
-          count = +pushCount;
-        }
-        const defPushCount = pushFilterList[filterScale.value].pushCount;
-        return count >= defPushCount ? true : false;
       } catch (e) {
         console.error(e.message);
+      } finally {
+        loadingStatus.value = false;
       }
     };
     /**
@@ -309,13 +252,8 @@ export default {
      * @description filter ptt熱度文章
      */
     let filterScale = ref("");
-    const filterPttList = async function (scale) {
-      filterScale.value = scale;
-      await selectNewsName("pttStock");
-    };
+    const filterPttList = function () {};
     return {
-      financeNewsSheetData, // 爬出來的財經資料
-      selectNewsName, //選到哪個新聞的名稱
       pushFilterList, //filter Ptt熱門文章的列表
       filterPttList, // 給client點選的function
       filterScale, // 點選到的篩選級別
@@ -328,6 +266,7 @@ export default {
       loadingStatus, // loading 視窗
       rectangleColor, // 給左上角方形title的顏色
       selectNewsNameToList, // 選到的新聞網名稱標題
+      updateNewsList, // 更新newsList資料庫
     };
   },
 };

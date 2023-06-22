@@ -13,7 +13,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/financeNews/yahooInternational">
+          <router-link to="/news">
             <a class="mr-4 hover:underline md:mr-6">財經新聞/</a>
           </router-link>
         </li>

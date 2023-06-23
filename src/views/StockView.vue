@@ -9,14 +9,14 @@
       >
         法人買賣超<font-awesome-icon icon="list" class="mx-2" />
       </button>
-      <button
+      <!-- <button
         @click="toggleTechStatus = !toggleTechStatus"
         class="fixed right-0 px-6 py-2 text-sm transition-colors rounded shadow-xl bg-slate-500 hover:bg-slate-600 text-slate-100 shadow-slate-400 duration-500"
         :class="{ 'translate-x-24': toggleTechStatus }"
       >
         <font-awesome-icon icon="list" class="mx-2" />
         技術分析&ensp;&thinsp;
-      </button>
+      </button> -->
     </div>
     <!-- 左方選單List -->
     <div
@@ -24,7 +24,7 @@
       :class="{ '-translate-x-full': toggleInvestStatus }"
     >
       <p class="border-l-2 border-b-2 rounded-b-md border-red-500 p-2 mb-1">
-        資料更新時間：06/19
+        資料更新時間：{{ investorUpdateTime }}
       </p>
       <p
         class="border-l-2 border-t-2 rounded-b-md border-blue-500 p-2 mb-1 mt-1"
@@ -45,7 +45,7 @@
             :for="`${item.type}${index}`"
             class="select-none cursor-pointer rounded-lg border-2 border-gray-200 py-3 px-6 font-bold text-gray-200 transition-colors duration-200 ease-in-out bg-black"
             :class="{
-              'peer-checked:bg-gray-200 peer-checked:text-gray-900 peer-checked:border-gray-200':
+              'peer-checked:bg-red-200 peer-checked:text-red-900 peer-checked:border-red-200':
                 investorSelectedType.includes(item.name),
             }"
           >
@@ -72,7 +72,7 @@
             :for="`${item.type}${index}-2`"
             class="select-none cursor-pointer rounded-lg border-2 border-gray-200 py-3 px-6 font-bold text-gray-200 transition-colors duration-200 ease-in-out bg-black"
             :class="{
-              'peer-checked:bg-gray-200 peer-checked:text-gray-900 peer-checked:border-gray-200':
+              'peer-checked:bg-red-200 peer-checked:text-red-900 peer-checked:border-red-200':
                 investorSelectedType2.includes(item.name),
             }"
           >
@@ -99,7 +99,7 @@
             :for="`${item.type}${index}`"
             class="select-none cursor-pointer rounded-lg border-2 border-gray-200 py-3 px-6 font-bold text-gray-200 transition-colors duration-200 ease-in-out bg-black"
             :class="{
-              'peer-checked:bg-gray-200 peer-checked:text-gray-900 peer-checked:border-gray-200':
+              'peer-checked:bg-red-200 peer-checked:text-red-900 peer-checked:border-red-200':
                 marketSelectedType.includes(item.name),
             }"
           >
@@ -126,7 +126,7 @@
             :for="`${item.type}${index}`"
             class="select-none cursor-pointer rounded-lg border-2 border-gray-200 py-3 px-6 font-bold text-gray-200 transition-colors duration-200 ease-in-out bg-black"
             :class="{
-              'peer-checked:bg-gray-200 peer-checked:text-gray-900 peer-checked:border-gray-200':
+              'peer-checked:bg-red-200 peer-checked:text-red-900 peer-checked:border-red-200':
                 accumDaySelectedType.includes(item.name),
             }"
           >
@@ -136,12 +136,13 @@
       </div>
       <div class="flex flex-row items-center justify-between w-full">
         <button
-          @click="getInvestCombineData"
+          @click="debounceGetInvestor"
           class="self-center relative top-9 w-100 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 border-blue-500 hover:border-blue-600 hover:bg-blue-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center"
         >
           <span class="mx-auto">搜尋</span>
         </button>
         <button
+          v-if="false"
           @click="postInvestorDB"
           class="self-center relative top-9 w-100 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 border-blue-500 hover:border-blue-600 hover:bg-blue-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center"
         >
@@ -198,6 +199,7 @@ import {
   computed,
   reactive,
 } from "vue";
+import { debounce } from "lodash";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faArrowTrendUp, faList } from "@fortawesome/free-solid-svg-icons";
 
@@ -218,6 +220,7 @@ export default {
     let investorSelectedType2 = ref([]);
     let marketSelectedType = ref([]);
     let accumDaySelectedType = ref([]);
+    let investorUpdateTime = ref(""); // 法人買賣超更新時間
     const titleName = computed(() => {
       if (
         marketSelectedType.value[0] &&
@@ -231,8 +234,20 @@ export default {
       }
     });
     onMounted(async () => {
+      getInvestorUpdateTime();
       loadingStatus.value = false;
     });
+    const getInvestorUpdateTime = async function () {
+      try {
+        const { data } = await proxy.axios.post(
+          `${proxy.envURL}/stock/investor/updateDate`
+        );
+        investorUpdateTime.value = data;
+      } catch (e) {
+        investorUpdateTime.value = "";
+        console.error(e.message);
+      }
+    };
     /**
      * @description 設定api 與 template 連結 => 點選法人買賣種類，會對應到左上角的title
      * @param {*} investType
@@ -252,6 +267,7 @@ export default {
         console.error(error);
       }
     };
+    const debounceGetInvestor = debounce(getInvestCombineData, 1000);
     /**
      * @description 更新法人資料庫
      */
@@ -410,6 +426,8 @@ export default {
     let toggleTechStatus = ref(window.innerWidth < 1200 ? true : false);
     return {
       getInvestCombineData, // 取得法人買賣超資料（打api
+      debounceGetInvestor, // 取得法人買賣超資料（打api for debounce
+      investorUpdateTime, // 法人資料庫更新時間
       troggleModalF, // emit上來的function，目的是用於開啟關閉視窗
       postInvestorDB, // 更新法人資料庫
       toggleInvestStatus, // 切換法人買賣超出現與否的參數

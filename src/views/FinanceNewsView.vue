@@ -20,7 +20,7 @@
         class="flex flex-col justify-end items-center m-4 bg-slate-400/30 z-10 rounded opacity-90 w-48 duration-500"
         :class="{ 'translate-x-44': toggleNewsWeb }"
       >
-      <!-- 新聞清單 -->
+        <!-- 新聞清單 -->
         <div class="flex flex-col items-end">
           <button
             @click="selectNewsNameToList(eachKey)"
@@ -47,13 +47,13 @@
               </div>
             </template>
           </button>
-
         </div>
-        <button @click="updateNewsList"
-            class="relative top-5 w-100 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 border-blue-500 hover:border-blue-600 hover:bg-blue-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center"
-          >
-            <span class="mx-auto">更新資料庫</span>
-          </button>
+        <button
+          @click="updateNewsList"
+          class="relative top-5 w-100 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 border-blue-500 hover:border-blue-600 hover:bg-blue-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center"
+        >
+          <span class="mx-auto">更新資料庫</span>
+        </button>
       </div>
     </div>
     <!-- ptt filter -->
@@ -205,6 +205,7 @@ export default {
     let titleHref = ref("");
     let thisTimeSelectKey = ref("");
     let newsListInChild = ref([]);
+    let cloneNewsListInChild = [];
     /**
      * @description 點擊新聞網名稱，打API
      */
@@ -218,6 +219,7 @@ export default {
         titleHref.value = inputItem.link;
         thisTimeSelectKey.value = inputItem.apiRoute;
         newsListInChild.value = data;
+        cloneNewsListInChild = data;
       } catch (e) {
         console.error(e.message);
       }
@@ -252,7 +254,14 @@ export default {
      * @description filter ptt熱度文章
      */
     let filterScale = ref("");
-    const filterPttList = function () {};
+    const filterPttList = function (ele) {
+      const cloneList = JSON.parse(JSON.stringify(cloneNewsListInChild));
+      const filterStatus = pushFilterList[ele];
+      const filterList = cloneList.filter(
+        (item) => parseInt(item.pushCount) > filterStatus.pushCount
+      );
+      newsListInChild.value = filterList;
+    };
     return {
       pushFilterList, //filter Ptt熱門文章的列表
       filterPttList, // 給client點選的function

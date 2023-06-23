@@ -81,7 +81,6 @@ export default {
       textColor600Array = textColor600Array.concat(textColor600Array);
     }
     const onViewData = computed(() => {
-      console.log(props.newsData);
       return props.newsData;
     });
     const listIndex = computed(() => {

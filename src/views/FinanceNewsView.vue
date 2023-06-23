@@ -211,6 +211,7 @@ export default {
      */
     const selectNewsNameToList = async function (inputItem) {
       try {
+        console.log(import.meta.env.VITE_BASE_URL)
         const { apiRoute } = inputItem;
         const { data } = await proxy.axios.post(
           `${import.meta.env.VITE_BASE_URL}/stock/news/${apiRoute}`

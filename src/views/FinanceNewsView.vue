@@ -213,7 +213,7 @@ export default {
       try {
         const { apiRoute } = inputItem;
         const { data } = await proxy.axios.post(
-          `${proxy.envURL}/stock/news/${apiRoute}`
+          `${import.meta.env.VITE_BASE_URL}/stock/news/${apiRoute}`
         );
         titleName.value = inputItem.name;
         titleHref.value = inputItem.link;
@@ -231,7 +231,7 @@ export default {
       try {
         loadingStatus.value = true;
         const { status } = await proxy.axios.post(
-          `${proxy.envURL}/stock/news/`
+          `${import.meta.env.VITE_BASE_URL}/stock/news/`
         );
         if (status === 200) {
           loadingStatus.value = false;

@@ -240,7 +240,7 @@ export default {
     const getInvestorUpdateTime = async function () {
       try {
         const { data } = await proxy.axios.post(
-          `${proxy.envURL}/stock/investor/updateDate`
+          `${import.meta.env.VITE_BASE_URL}/stock/investor/updateDate`
         );
         investorUpdateTime.value = data;
       } catch (e) {
@@ -259,7 +259,7 @@ export default {
       try {
         const keyUrl = getApiRouteKey();
         const { data } = await proxy.axios.post(
-          `${proxy.envURL}/stock/investorCombine/${keyUrl}`
+          `${import.meta.env.VITE_BASE_URL}/stock/investorCombine/${keyUrl}`
         );
         buy_page_list.value = data.buy;
         sell_page_list.value = data.sell;
@@ -275,7 +275,7 @@ export default {
       try {
         loadingStatus.value = true;
         const { status } = await proxy.axios.post(
-          `${proxy.envURL}/stock/investor`
+          `${import.meta.env.VITE_BASE_URL}/stock/investor`
         );
       } catch (e) {
         console.error(e.message);

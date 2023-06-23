@@ -174,7 +174,7 @@ export default {
   setup() {
     const { proxy } = getCurrentInstance()
     const filterStockApi = proxy.axios.get(
-      `${proxy.envURL}/stockApi/sheetData/filterStock`
+      `${import.meta.env.VITE_BASE_URL}/stockApi/sheetData/filterStock`
     )
     let rawFilterStockData = {}
     let eachDataKey = [] // 各個要顯示資料的key值。ex：代號、股票名稱....

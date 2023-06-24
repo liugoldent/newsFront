@@ -267,7 +267,7 @@ export default {
         loadingStatus.value = false;
       }
     };
-    const debounceGetInvestor = debounce(getInvestCombineData, 1000);
+    const debounceGetInvestor = debounce(getInvestCombineData, 500);
     /**
      * @description 更新法人資料庫
      */

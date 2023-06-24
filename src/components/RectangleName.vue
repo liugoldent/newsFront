@@ -20,7 +20,7 @@
       :class="borderColor"
     ></span>
     <span
-      class="relative group-hover:text-red-100 p-5 text-xl"
+      class="relative group-hover:text-red-100 p-5 text-md"
       :class="textColor"
     >
       <a :href="titleHref">{{ titleName }}</a>

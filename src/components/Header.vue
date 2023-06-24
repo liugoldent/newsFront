@@ -9,7 +9,7 @@
         </li>
         <li>
           <router-link to="/stock">
-            <a class="mr-4 hover:underline md:mr-6">一日法人買賣超/</a>
+            <a class="mr-4 hover:underline md:mr-6">法人共同買賣超/</a>
           </router-link>
         </li>
         <li>

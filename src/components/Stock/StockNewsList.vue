@@ -48,7 +48,11 @@
                 class="text-xl inline mx-2 relative bottom-2"
                 :class="textColor600Array[index]"
               >
-                {{ eachData.pushCount }}
+                {{
+                  parseInt(eachData.pushCount) > 99
+                    ? "爆"
+                    : parseInt(eachData.pushCount)
+                }}
               </p>
             </div>
           </div>

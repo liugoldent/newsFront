@@ -20,14 +20,22 @@
     </div>
     <!-- 左方選單List -->
     <div
-      class="flex flex-col justify-center items-start bg-slate-300/50 opacity-90 fixed left-0 z-10 my-20 p-4 rounded-md duration-500"
+      class="flex flex-col justify-center items-start bg-slate-300 opacity-90 fixed left-0 z-10 my-20 p-4 rounded-md duration-500"
       :class="{ '-translate-x-full': toggleInvestStatus }"
     >
-      <p class="border-l-2 border-b-2 rounded-b-md border-red-500 p-2 mb-1">
-        資料更新時間：{{ investorUpdateTime }}
-      </p>
+      <div class="flex flex-row justify-between items-start">
+        <p class="border-l-2 border-b-2 border-blue-500 p-2 mb-1">
+          資料更新時間：{{ investorUpdateTime }}
+        </p>
+        <button
+          @click="debounceGetInvestor"
+          class="w-100 relative b-1 bg-white tracking-wide text-gray-800 font-bold border-b-2 border-blue-500 hover:border-blue-600 hover:bg-blue-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center"
+        >
+          <span class="mx-auto">Search</span>
+        </button>
+      </div>
       <p
-        class="border-l-2 border-t-2 rounded-b-md border-blue-500 p-2 mb-1 mt-1"
+        class="border-l-2 border-t-2 rounded-b-md border-red-500 p-2 mb-1 mt-1"
       >
         法人 - 1
       </p>
@@ -43,7 +51,7 @@
           />
           <label
             :for="`${item.type}${index}`"
-            class="select-none cursor-pointer rounded-lg border-2 border-gray-200 py-3 px-6 font-bold text-gray-200 transition-colors duration-200 ease-in-out bg-black"
+            class="select-none cursor-pointer rounded-lg border-2 border-gray-200 py-2 px-5 font-bold text-gray-200 transition-colors duration-200 ease-in-out bg-black"
             :class="{
               'peer-checked:bg-red-200 peer-checked:text-red-900 peer-checked:border-red-200':
                 investorSelectedType.includes(item.name),
@@ -54,7 +62,7 @@
         </template>
       </div>
       <p
-        class="border-l-2 border-t-2 rounded-b-md border-blue-500 p-2 mb-1 mt-1"
+        class="border-l-2 border-t-2 rounded-b-md border-red-500 p-2 mb-1 mt-1"
       >
         法人 - 2
       </p>
@@ -70,7 +78,7 @@
           />
           <label
             :for="`${item.type}${index}-2`"
-            class="select-none cursor-pointer rounded-lg border-2 border-gray-200 py-3 px-6 font-bold text-gray-200 transition-colors duration-200 ease-in-out bg-black"
+            class="select-none cursor-pointer rounded-lg border-2 border-gray-200 py-2 px-5 font-bold text-gray-200 transition-colors duration-200 ease-in-out bg-black"
             :class="{
               'peer-checked:bg-red-200 peer-checked:text-red-900 peer-checked:border-red-200':
                 investorSelectedType2.includes(item.name),
@@ -81,7 +89,7 @@
         </template>
       </div>
       <p
-        class="border-l-2 border-t-2 rounded-b-md border-blue-500 p-2 mb-1 mt-1"
+        class="border-l-2 border-t-2 rounded-b-md border-red-500 p-2 mb-1 mt-1"
       >
         市場類別
       </p>
@@ -97,7 +105,7 @@
           />
           <label
             :for="`${item.type}${index}`"
-            class="select-none cursor-pointer rounded-lg border-2 border-gray-200 py-3 px-6 font-bold text-gray-200 transition-colors duration-200 ease-in-out bg-black"
+            class="select-none cursor-pointer rounded-lg border-2 border-gray-200 py-2 px-5 font-bold text-gray-200 transition-colors duration-200 ease-in-out bg-black"
             :class="{
               'peer-checked:bg-red-200 peer-checked:text-red-900 peer-checked:border-red-200':
                 marketSelectedType.includes(item.name),
@@ -108,7 +116,7 @@
         </template>
       </div>
       <p
-        class="border-l-2 border-t-2 rounded-b-md border-blue-500 p-2 mb-1 mt-1"
+        class="border-l-2 border-t-2 rounded-b-md border-red-500 p-2 mb-1 mt-1"
       >
         累積日期
       </p>
@@ -124,7 +132,7 @@
           />
           <label
             :for="`${item.type}${index}`"
-            class="select-none cursor-pointer rounded-lg border-2 border-gray-200 py-3 px-6 font-bold text-gray-200 transition-colors duration-200 ease-in-out bg-black"
+            class="select-none cursor-pointer rounded-lg border-2 border-gray-200 py-2 px-5 font-bold text-gray-200 transition-colors duration-200 ease-in-out bg-black"
             :class="{
               'peer-checked:bg-red-200 peer-checked:text-red-900 peer-checked:border-red-200':
                 accumDaySelectedType.includes(item.name),
@@ -134,15 +142,11 @@
           </label>
         </template>
       </div>
-      <div class="flex flex-row items-center justify-between w-full">
+      <div
+        v-if="false"
+        class="flex flex-row items-center justify-between w-full"
+      >
         <button
-          @click="debounceGetInvestor"
-          class="self-center relative top-9 w-100 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 border-blue-500 hover:border-blue-600 hover:bg-blue-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center"
-        >
-          <span class="mx-auto">搜尋</span>
-        </button>
-        <button
-          v-if="false"
           @click="postInvestorDB"
           class="self-center relative top-9 w-100 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 border-blue-500 hover:border-blue-600 hover:bg-blue-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center"
         >
@@ -191,14 +195,7 @@ import StockModalLink from "../components/Stock/StockModalLink.vue";
 import RectangleNameVue from "../components/RectangleName.vue";
 import ScrollTopButton from "../components/ScrollTopButton.vue";
 import BlackMirrorVue from "../components/BlackMirror.vue";
-import {
-  ref,
-  getCurrentInstance,
-  onMounted,
-  watch,
-  computed,
-  reactive,
-} from "vue";
+import { ref, getCurrentInstance, onMounted, computed } from "vue";
 import { debounce } from "lodash";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faArrowTrendUp, faList } from "@fortawesome/free-solid-svg-icons";
@@ -257,6 +254,7 @@ export default {
     let titleHref = ref("");
     const getInvestCombineData = async function () {
       try {
+        loadingStatus.value = true;
         const keyUrl = getApiRouteKey();
         const { data } = await proxy.axios.post(
           `${import.meta.env.VITE_BASE_URL}/stock/investorCombine/${keyUrl}`
@@ -265,6 +263,8 @@ export default {
         sell_page_list.value = data.sell;
       } catch (error) {
         console.error(error);
+      } finally {
+        loadingStatus.value = false;
       }
     };
     const debounceGetInvestor = debounce(getInvestCombineData, 1000);
@@ -305,8 +305,12 @@ export default {
     let modalStatus = ref(false);
     let propsToModal = ref({});
     const troggleModalF = function (emitFromTableData) {
-      propsToModal.value = emitFromTableData;
-      modalStatus.value = emitFromTableData.name.length > 0 ? true : false;
+      try {
+        propsToModal.value = emitFromTableData;
+        modalStatus.value = emitFromTableData.name.length > 0 ? true : false;
+      } catch (e) {
+        console.error(e.message);
+      }
     };
     /**
      * @description 設定連結的web

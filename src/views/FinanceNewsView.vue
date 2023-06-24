@@ -23,7 +23,7 @@
         <!-- 新聞清單 -->
         <div class="flex flex-col items-end">
           <button
-            @click="selectNewsNameToList(eachKey)"
+            @click="debounceSelectNewsNameToList(eachKey)"
             v-for="eachKey in webType"
             :key="eachKey['apiRoute']"
             class="m-2"
@@ -100,7 +100,6 @@ import {
   inject,
   watch,
 } from "vue";
-import { useRouter, useRoute } from "vue-router";
 import StockNewsListVue from "../components/Stock/StockNewsList.vue";
 import ScrollTopButton from "../components/ScrollTopButton.vue";
 import RectangleNameVue from "../components/RectangleName.vue";
@@ -109,6 +108,7 @@ import {
   faNewspaper,
   faCircleArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
+import { debounce } from "lodash";
 library.add(faNewspaper, faCircleArrowLeft);
 
 export default {
@@ -206,12 +206,12 @@ export default {
     let thisTimeSelectKey = ref("");
     let newsListInChild = ref([]);
     let cloneNewsListInChild = [];
+    let cloneClickInputItem = {};
     /**
      * @description 點擊新聞網名稱，打API
      */
     const selectNewsNameToList = async function (inputItem) {
       try {
-        console.log(import.meta.env.VITE_BASE_URL)
         const { apiRoute } = inputItem;
         const { data } = await proxy.axios.post(
           `${import.meta.env.VITE_BASE_URL}/stock/news/${apiRoute}`
@@ -221,10 +221,17 @@ export default {
         thisTimeSelectKey.value = inputItem.apiRoute;
         newsListInChild.value = data;
         cloneNewsListInChild = data;
+        cloneClickInputItem = inputItem;
       } catch (e) {
         console.error(e.message);
+      } finally {
+        loadingStatus.value = false;
       }
     };
+    const debounceSelectNewsNameToList = debounce((data) => {
+      loadingStatus.value = true;
+      selectNewsNameToList(data);
+    }, 500);
     /**
      * @description 更新newList
      */
@@ -236,6 +243,7 @@ export default {
         );
         if (status === 200) {
           loadingStatus.value = false;
+          await selectNewsNameToList(cloneClickInputItem);
         }
       } catch (e) {
         console.error(e.message);
@@ -256,12 +264,16 @@ export default {
      */
     let filterScale = ref("");
     const filterPttList = function (ele) {
-      const cloneList = JSON.parse(JSON.stringify(cloneNewsListInChild));
-      const filterStatus = pushFilterList[ele];
-      const filterList = cloneList.filter(
-        (item) => parseInt(item.pushCount) > filterStatus.pushCount
-      );
-      newsListInChild.value = filterList;
+      try {
+        const cloneList = JSON.parse(JSON.stringify(cloneNewsListInChild));
+        const filterStatus = pushFilterList[ele];
+        const filterList = cloneList.filter(
+          (item) => parseInt(item.pushCount) > filterStatus.pushCount
+        );
+        newsListInChild.value = filterList;
+      } catch (e) {
+        console.error(e.message);
+      }
     };
     return {
       pushFilterList, //filter Ptt熱門文章的列表
@@ -276,6 +288,7 @@ export default {
       loadingStatus, // loading 視窗
       rectangleColor, // 給左上角方形title的顏色
       selectNewsNameToList, // 選到的新聞網名稱標題
+      debounceSelectNewsNameToList, // 選到的新聞網名稱標題(debounce版本)
       updateNewsList, // 更新newsList資料庫
     };
   },

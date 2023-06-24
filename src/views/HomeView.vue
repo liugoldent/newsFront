@@ -11,9 +11,9 @@ export default {
     let trendInfo = ref({});
     let financeInfo = ref({});
     stockInfo.value = {
-      title: "一日法人買賣超",
+      title: "法人共同買賣超",
       content:
-        "相較於以往的法人買賣超，在這裡我們可以透過買賣超與技術分析來篩選出你想看的股票",
+        "相較於以往的法人買賣超，在這裡我們可以透過共同買賣超來篩選出你想看的股票",
     };
     trendInfo.value = {
       title: "熱搜關鍵字",

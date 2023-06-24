@@ -243,7 +243,9 @@ export default {
         );
         if (status === 200) {
           loadingStatus.value = false;
-          await selectNewsNameToList(cloneClickInputItem);
+          if (Object.keys(cloneClickInputItem).length > 0) {
+            await selectNewsNameToList(cloneClickInputItem);
+          }
         }
       } catch (e) {
         console.error(e.message);

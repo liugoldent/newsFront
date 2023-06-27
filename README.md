@@ -2,12 +2,10 @@
 ## 前端：
 https://github.com/liugoldent/newsFront
 ## 後端：
-https://github.com/liugoldent/newsBack (Private)
-
+(Private)
 ## 網站入口：
-https://finance-news-g.herokuapp.com/
+https://financial-news.netlify.app/
 
 ## 使用技術
-![tech](./public/tech.png)
-## 網站流程
-![tech](./public/process.png)
+Vue3 TailwindCSS Python MongoDB
+

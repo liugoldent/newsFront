@@ -65,7 +65,7 @@ export default {
      * @description 組出產品陣列
      * @param {*} rawData
      */
-    const composeFormat = function (rawData, shopType) {
+    const composeFormat = function (rawData) {
       try {
         let productResult = [];
         for (let i = 0, len = rawData.word.length; i < len; i++) {
